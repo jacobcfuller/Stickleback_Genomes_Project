@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#JSM_IX<-load_depth_to_table(\"japan_sea/male/IX/\",\"IX\")\nJSM_XIX<-load_depth_to_table(\"japan_sea/male/XIX/\" , \"XIX\")\n#JSM_XXI<-load_depth_to_table(\"japan_sea/male/XXI/\", \"XXI\")\n\nPOM_XIX<-load_depth_to_table(\"pacific_ocean/male/XIX/\",\"XIX\")\n#POM_XXI<-load_depth_to_table(\"pacific_ocean/male/XXI/\", \"XXI\")\n",
+    "created" : 1471018414171.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3592922687",
+    "id" : "500885AB",
+    "lastKnownWriteTime" : 1473182825,
+    "last_content_update" : 1473182825862,
+    "path" : "~/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/sliding_win_avg/depth_table.R",
+    "project_path" : "depth_table.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

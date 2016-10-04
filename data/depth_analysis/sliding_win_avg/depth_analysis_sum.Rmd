@@ -1,0 +1,100 @@
+---
+title: "Depth Analysis"
+author: "Jacob Fuller"
+date: "August 4, 2016"
+output:
+  html_document:
+    highlight: haddock
+    theme: default
+  pdf_document: default
+  word_document: default
+runtime: shiny
+---
+
+# Alignments
+I used Bowtie2 to align whole genome sequences of stickleback to the Glazer reference. 
+I used Samtools to sort, index, and filter by whether MAPQ score ≥ 20
+```{bash eval = FALSE}
+cd /lustre1/jcfuller/stick/genome/fastq/stickleback_fastq/${sample}
+
+# Align
+export read1_list=`ls -m *_1.fastq.gz | tr -d ' \n'`
+
+module load bowtie2/latest
+shopt -s nullglob
+set -- *_2.fastq.gz
+if [ "$#" -gt 0 ]
+  then
+      export read2_list=`ls -m *_2.fastq.gz | tr -d ' \n'`
+      bowtie2 -p ${cores} --no-unal --very-sensitive -x /lustre1/jcfuller/stick/genome/bowtie/Glazer/Glazer \
+      -1 ${read1_list} \
+      -2 ${read2_list} \
+      --rg-id ${sample}_${runNum} \
+      --rg SM:${sample} \
+      --rg PL:ILLUMINA \
+      --rg LB:${runNum} \
+      -S /lustre1/jcfuller/stick/genome/sam/${sample}.sam \
+      >& ${sample}_${runNum}_summary.txt
+
+  else
+      bowtie2 -p ${cores} --no-unal --very-sensitive -x /lustre1/jcfuller/stick/genome/bowtie/Glazer/Glazer \
+      -U ${read1_list} \
+      --rg-id ${sample}_${runNum} \
+      --rg SM:${sample} \
+      --rg PL:ILLUMINA \
+      --rg LB:${runNum} \
+      -S /lustre1/jcfuller/stick/genome/sam/${sample}.sam \
+      >& ${sample}_${runNum}_summary.txt
+fi
+
+# Sort, index
+module load samtools/latest
+cd /lustre1/jcfuller/stick/genome/sam
+samtools view -bh -@ $(expr ${cores} - 1) ${sample}.sam > ${sample}.bam
+samtools sort -o ${sample}_sorted.bam -T ${sample}_s -@ ${cores} ${sample}.bam
+mv ${sample}_sorted.bam ${sample}.bam
+samtools index -b ${sample}.bam
+
+# Filter by whether MAPQ score ≥ 20
+if [ ${mapFilter} = true ]
+then
+    samtools view -bh -q 20 -@ $(expr ${cores} - 1) ${sample}.bam > ${sample}_q.bam
+    samtools index -b ${sample}_q.bam
+fi
+
+```
+
+
+#Acquiring Read Depth from Specific Chromosomes
+You can use the Samtools "view" command with a specified range to view a section of the .bam file. I did this, 
+and piped the result into the Bedtools "genomecov" command, with the -d option that produces the read depth at
+every basepair position. You must use bedtools v. 2.24.0 for this to work. V. 2.25.0 (on Sapelo) doesn't work
+as expected (unsure why). I'm only interested in the 3rd column of the bedtools results, so I pipe that into
+a output file. 
+```{bash eval = FALSE}
+#On UGA's Sapelo
+
+module load samtools/1.2
+#bedtools v. 2.25.0 causes weird issues
+module unload bedtools/2.25.0
+module load bedtools/2.24.0
+
+samtools view -b ${sample}.bam chrXXI | \
+bedtools genomecov \
+  -d \
+  -ibam stdin | \
+  awk '{print $3}' >> ${sample}_XXI_depth.txt
+```
+
+#Sliding Window Averages of Raw Read Depth
+Using a python program developed by Lucas Nell (<https://github.com/lucasnell/MAW_Misc/blob/master/slidWin.py>),
+I was able to find the a sliding window average of the read depths. The window size was 1000bp, and it moved 
+along the chromosome in 500 bp increments. For chrXIX, this is 41225 values. For chrXXI, this is 34715 values.
+
+#plot
+```{r echo=FALSE, eval=TRUE,warning=FALSE}
+library(ggplot2)
+source('depth_functions.R')
+JSM_IX_depth<-load_depth_to_table("japan_sea/IX")
+ggplot(JSM_IX_depth,aes(x=bp_pos,y=JSM_IX_depth$JSM_551_IX))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+scale_y_continuous(limits=c(0,10))
+```
