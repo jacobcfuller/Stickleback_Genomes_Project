@@ -1,3 +1,2 @@
 doc/*
-data/raw_depth/*
-bin/GATKpipe/__pycache__/*
+data/depth_analysis/raw_depth/*
