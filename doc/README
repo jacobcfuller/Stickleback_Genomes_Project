@@ -1,0 +1,18 @@
+7/12/2016
+
+-stickleback_genomes_MAW-2.xlsx
+  -contains download run selector browser table from SRA. relevant genomes
+  pulled out, with some highlighted by Dr.White
+
+-stickleback_run_accesions.txt
+  -These are all the specific RUN accessions relevant for download and conversion
+  to fastq. SRA download needs individual run accessions.
+
+-stickleback_run_sample.txt
+  -These are the highlighted runs and their experiment/sample accessions. Used
+  to create folders to organize each.
+
+-stickleback_samples.txt
+  -These are just the sample accessions for the relevant runs.
+
+    
