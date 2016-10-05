@@ -1,9 +1,0 @@
-{
-    "path" : "~/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/sliding_win_avg",
-    "sortOrder" : [
-        {
-            "ascending" : true,
-            "columnIndex" : 2
-        }
-    ]
-}
