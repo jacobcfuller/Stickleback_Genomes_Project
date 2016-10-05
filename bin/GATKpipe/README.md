@@ -2,13 +2,14 @@
 =====
 Python wrapper for The Genome Analysis Toolkit's Best Practices pipeline
 -----
+Author: Lucas Nell
 
 
-This pipeline was developed and tested on the newest high-performance computing cluster 
+This pipeline was developed and tested on the newest high-performance computing cluster
 ("Sapelo") at the Georgia Advanced Computing Resource Center (GACRC), University of
 Georgia.
 
-- OS: 64-bit CentOS 6.5 
+- OS: 64-bit CentOS 6.5
 - Torque Resource Manager
 - Moab Workload Manager
 
