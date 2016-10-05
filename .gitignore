@@ -1,3 +1,3 @@
-doc/
-data/raw_depth/
-bin/GATKpipe/__pycache__/
+doc/*
+data/raw_depth/*
+bin/GATKpipe/__pycache__/*
