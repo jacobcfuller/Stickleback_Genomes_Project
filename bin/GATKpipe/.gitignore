@@ -1,8 +1,0 @@
-*.iws
-Icon?
-.DS_Store
-unused/
-__pycache__/
-.idea/
-tmp_*
-shell_scripts
