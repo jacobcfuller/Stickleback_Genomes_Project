@@ -2,7 +2,7 @@
 =====
 Python wrapper for The Genome Analysis Toolkit's Best Practices pipeline
 -----
-Author: Lucas Nell
+Author: Lucas Nell www..lucasnell.com (thanks)
 
 
 This pipeline was developed and tested on the newest high-performance computing cluster
