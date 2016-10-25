@@ -13,8 +13,8 @@
 
 cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment/
 
-module load java/jdk1.8.0_20\n
-module load picard/2.4.1\n
+module load java/jdk1.8.0_20 \n
+module load picard/2.4.1 \n
 
 
 #first
