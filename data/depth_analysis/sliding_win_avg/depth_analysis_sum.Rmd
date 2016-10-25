@@ -1,4 +1,4 @@
----
+d---
 title: "Depth Analysis"
 author: "Jacob Fuller"
 date: "August 4, 2016"
@@ -95,6 +95,6 @@ along the chromosome in 500 bp increments. For chrXIX, this is 41225 values. For
 ```{r echo=FALSE, eval=TRUE,warning=FALSE}
 library(ggplot2)
 source('depth_functions.R')
-JSM_IX_depth<-load_depth_to_table("japan_sea/IX")
-ggplot(JSM_IX_depth,aes(x=bp_pos,y=JSM_IX_depth$JSM_551_IX))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+scale_y_continuous(limits=c(0,10))
+JSM_XIX<-load_depth_to_table("japan_sea/male/XIX/" , "XIX")
+ruff_plot(JSM_XIX, JSM_XIX$JSM_537_XIX)
 ```
