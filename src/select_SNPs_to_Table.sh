@@ -40,7 +40,7 @@ java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -o ${sample}_XIX.vcf \
 -L chrXIX \
 -selectType SNP \
--restrictAllelesTo BIALLELIC
+-restrictAllelesTo BIALLELIC \
 -sn ${sample}_q
 
 # Place selected variants into table
