@@ -12,6 +12,7 @@
 
 cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment/
 
+#make sure to keep these up to date
 module load java/jdk1.8.0_20
 module load picard/2.4.1
 module load gatk/3.6
