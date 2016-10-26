@@ -38,9 +38,9 @@ java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
 -V ${pop} \
 -o ${sample}_XIX.vcf \
--L chrXIX
--selectType SNP
--sn ${sample}_q
+-L chrXIX \
+-selectType SNP \
+-sn ${sample}_q 
 
 # Place selected variants into table
 java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
