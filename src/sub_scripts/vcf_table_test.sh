@@ -14,18 +14,18 @@ cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAl
 
 module load java/jdk1.8.0_20
 module load picard/2.4.1
-
+module load gatk/3.6
 
 #first
 
-java -jar /usr/local/apps/gatk/3.4.0/GenomeAnalysisTK.jar \
+java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -T SelectVariants \
 -R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
 -V /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment/paxton_jG.vcf \
 -o single_sample_test.vcf \
 -sn male9_q
 
-java -jar /usr/local/apps/gatk/3.4.0/GenomeAnalysisTK.jar \
+java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -T VariantsToTable \
 -R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
 -V single_sample_test.vcf \
