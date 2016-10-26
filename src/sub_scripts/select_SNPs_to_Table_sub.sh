@@ -43,4 +43,4 @@ sleep 1s
 qsub /home/jcfuller/sub_scripts/select_SNPs_to_Table_ind_sub.sh
 sleep 1s
 
-done < ${fetch}
+done < ${sample}
