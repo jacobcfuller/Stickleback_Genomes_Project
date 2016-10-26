@@ -19,16 +19,32 @@ module load gatk/3.6
 
 #first
 
+#java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
+#-T SelectVariants \
+#-R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
+#-V /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment/paxton_jG.vcf \
+#-o single_sample_test.vcf \
+#-sn male9_q
+
+#java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
+#-T VariantsToTable \
+#-R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
+#-V single_sample_test.vcf \
+#-F POS -GF GT -GF PL -GF GQ  \
+#-o single_sample_test.table
+
+#second
+
 java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -T SelectVariants \
 -R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
 -V /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment/paxton_jG.vcf \
--o single_sample_test.vcf \
--sn male9_q
+-o include_SNPs_only_test.vcf \
+-selectType SNP
 
 java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -T VariantsToTable \
 -R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
 -V single_sample_test.vcf \
--F POS -GF GT -GF PL -GF GQ  \
--o single_sample_test.table
+-F POS -F CHROM -GF GT -GF PL -GF GQ  \
+-o include_SNPs_only_test.table
