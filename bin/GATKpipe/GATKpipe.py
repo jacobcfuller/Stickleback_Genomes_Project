@@ -22,14 +22,14 @@ import argparse as ap
 Parser = ap.ArgumentParser(prog = "GATKpipe",
                            description = "Python wrapper for GATK's Best Practices " + \
                                          "pipeline.")
-subParsers = Parser.add_subparsers(title = "Subcommands", 
+subParsers = Parser.add_subparsers(title = "Subcommands",
                                    description = "Valid subcommands to pass to GATKpipe.",
                                    dest = "command")
 
 # --------------
 # Prepare reference fasta
 # --------------
-prParser = subParsers.add_parser("prepRef", 
+prParser = subParsers.add_parser("prepRef",
                                  help = "Prepare a reference fasta for GATK " + \
                                         "pipeline using SAMtools faidx and PICARD " + \
                                         "CreateSequenceDictionary")
@@ -49,7 +49,7 @@ rgParser.add_argument("files", metavar = "F", nargs = "+",
 # --------------
 # Mark duplicates
 # --------------
-mdParser = subParsers.add_parser("markDups", 
+mdParser = subParsers.add_parser("markDups",
                                  help = "Mark duplicates in BAM files via PICARD " + \
                                         "MarkDuplicates.")
 mdParser.add_argument("-c", "--cores", type = int, metavar = "C", default = 1,
@@ -61,7 +61,7 @@ mdParser.add_argument("files", metavar = "F", nargs = "+",
 # --------------
 # Realign indels
 # --------------
-riParser = subParsers.add_parser("reIndels", 
+riParser = subParsers.add_parser("reIndels",
                                  help = "Local realignment around indels via GATK " + \
                                         "RealignerTargetCreator and IndelRealigner.")
 riParser.add_argument("-r", "--reference", metavar = "R",
@@ -76,7 +76,7 @@ riParser.add_argument("files", metavar = "F", nargs = "+",
 # --------------
 # Call variants
 # --------------
-cvParser = subParsers.add_parser("callVars", 
+cvParser = subParsers.add_parser("callVars",
                                  help = "Call variants with GATK HaplotypeCaller.")
 cvParser.add_argument("-r", "--reference", metavar = "R",
                       help = "Path to uncompressed reference fasta file. It is " + \
