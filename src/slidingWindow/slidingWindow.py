@@ -54,6 +54,7 @@ for x in range(numWin):
     slidWinCount[x] = counter
 
 
+np.savetxt(file+"_slidWin",slidWinCount, fmt='%i')
 
 
 
