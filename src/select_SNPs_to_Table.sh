@@ -39,7 +39,7 @@ java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -V ${pop} \
 -o ${sample}_XIX.vcf \
 -L chrXIX \
--select "QUAL > 20" \
+--selectexpressions "QUAL > 20" \
 -selectType SNP \
 -restrictAllelesTo BIALLELIC \
 -sn ${sample}_q
