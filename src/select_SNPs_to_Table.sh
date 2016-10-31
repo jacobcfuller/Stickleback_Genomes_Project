@@ -39,6 +39,7 @@ java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -V ${pop} \
 -o ${sample}_XIX.vcf \
 -L chrXIX \
+-select "QUAL > 20" \
 -selectType SNP \
 -restrictAllelesTo BIALLELIC \
 -sn ${sample}_q
@@ -48,5 +49,5 @@ java -jar /usr/local/apps/gatk/latest/GenomeAnalysisTK.jar \
 -T VariantsToTable \
 -R /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
 -V ${sample}_XIX.vcf \
--F POS -F CHROM -GF GT -GF PL -GF GQ  \
+-F POS -F CHROM -F QUAL -GF GT -GF PL -GF GQ  \
 -o ${sample}_XIX.table
