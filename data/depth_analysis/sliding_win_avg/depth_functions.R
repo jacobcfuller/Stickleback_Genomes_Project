@@ -40,6 +40,16 @@ get_bp_pos_vector<-function(table,chr){
   
 }
 
+load_to_table_to_test<-function(male,female){
+  POF<-read.table(female,header=TRUE)
+  male10<-read.table(male,header=TRUE)
+  bp_pos<-get_bp_pos_vector(male10,"XIX")
+  logMale10POF <- log2(male10/POF)
+  log_graph<-cbind(bp_pos,logMale10POF)
+  colnames(log_graph)<-c("bp_pos","log(male/female)")
+  return(log_graph)
+}
+
 
 #####################################################################################
 #                                   Analysis                                        #
@@ -53,7 +63,7 @@ second_deriv<-function(table,col){
   return(deriv_2)
 }
 
-ruff_plot<-function(table,depth){
+ruff_plot<-function(){
   library(ggplot2)
-  ggplot(table,aes(x=bp_pos,y=depth))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+scale_y_continuous(limits=c(0,mean(depth+10)))
+  ggplot(test_graph,aes(x=test_graph$bp_pos,y=test_graph$`log(male/female)`))+geom_point(size=0.3,alpha=0.5)+geom_smooth()
 }
