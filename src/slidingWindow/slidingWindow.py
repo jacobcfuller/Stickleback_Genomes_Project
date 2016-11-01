@@ -45,13 +45,14 @@ slidWinCount = np.arange(numWin)
 # Not interested in knowing SNP count at end, because PAR boundary isn't near there
 for x in range(numWin):
     counter=0
-    for i in range(500):
-        if(varPresent[i+(500*x)] == 1):
+    for i in range(window):
+        if(varPresent[i+(window*x)] == 1):
             counter += 1
     slidWinCount[x] = counter
 
 
-np.savetxt(file+"_slidWin",slidWinCount, fmt='%i')
+np.savetxt(file+"_slidWin"+str(window),slidWinCount, fmt='%i')
+
 
 
 

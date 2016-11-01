@@ -21,3 +21,14 @@ get_bp_pos_vector<-function(table,chr){
   bp_pos_vec=avg_vec*(chr_size/length(avg_vec))
   
 }
+
+load_to_table_and_graph<-function(male,female){
+  POF<-read.table(female)
+  POF<-cbind(get_bp_pos_vector(POF,"XIX"),POF$V1)
+  POF<-data.frame(POF)
+  male10<-read.table(male)
+  male10<-cbind(get_bp_pos_vector(male10,"XIX"),male10$V1)
+  male10<-data.frame(male10)
+  male10<-cbind(male10,log2(male10$X2/POF$X2))
+  return(data.frame(male10))
+}
