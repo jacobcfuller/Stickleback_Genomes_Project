@@ -65,5 +65,5 @@ second_deriv<-function(table,col){
 
 ruff_plot<-function(){
   library(ggplot2)
-  ggplot(test_graph,aes(x=test_graph$bp_pos,y=test_graph$`log(male/female)`))+geom_point(size=0.3,alpha=0.5)+geom_smooth()
+  ggplot(test_graph,aes(x=test_graph$bp_pos,y=test_graph$`log(male/female)`))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+coord_cartesian(ylim = c(-5,5))
 }
