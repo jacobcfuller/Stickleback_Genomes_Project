@@ -10,4 +10,5 @@ data/depth_analysis/sliding_win_avg/sliding_win_avg.Rproj
 data/divergence_analysis/japan_sea
 data/divergence_analysis/pacific_ocean
 data/divergence_analysis/Paxton
+data/divergence_analysis/divergence_analysis.Rproj
 src/slidingWindow/.idea
