@@ -11,4 +11,6 @@ data/divergence_analysis/japan_sea
 data/divergence_analysis/pacific_ocean
 data/divergence_analysis/Paxton
 data/divergence_analysis/divergence_analysis.Rproj
+data/divergence_analysis/.RData
+data/divergence_analysis/.Rhistory
 src/slidingWindow/.idea
