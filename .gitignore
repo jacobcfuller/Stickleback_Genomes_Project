@@ -8,9 +8,9 @@ data/depth_analysis/sliding_win_avg/.RData
 data/depth_analysis/sliding_win_avg/.Rhistory
 data/depth_analysis/sliding_win_avg/sliding_win_avg.Rproj
 .Rproj.user
-data/divergence_analysis/japan_sea
-data/divergence_analysis/pacific_ocean
-data/divergence_analysis/Paxton
+data/divergence_analysis/japan_sea/*
+data/divergence_analysis/pacific_ocean/*
+data/divergence_analysis/Paxton/*
 data/divergence_analysis/divergence_analysis.Rproj
 data/divergence_analysis/.RData
 data/divergence_analysis/.Rhistory

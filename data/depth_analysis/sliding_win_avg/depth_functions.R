@@ -63,7 +63,12 @@ second_deriv<-function(table,col){
   return(deriv_2)
 }
 
-ruff_plot<-function(){
+ruff_plot<-function(table,bp_pos,y_axis){
   library(ggplot2)
-  ggplot(test_graph,aes(x=test_graph$bp_pos,y=test_graph$`log(male/female)`))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+coord_cartesian(ylim = c(-5,5))
+  ggplot(table,aes(x=bp_pos,y=y_axis))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+coord_cartesian(ylim = c(-5,5))
+}
+
+ruff_plot_limit<-function(table,bp_pos,y_axis){
+  library(ggplot2)
+  ggplot(table,aes(x=bp_pos,y=y_axis))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+scale_y_continuous(limits=c(-5,5))
 }
