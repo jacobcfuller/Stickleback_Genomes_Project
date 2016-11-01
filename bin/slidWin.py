@@ -3,6 +3,7 @@
 """Sliding Window function on raw read depth files genomecov.
 
 Note: No normalization based on chr19 reads is done here. That is saved for R scripts.
+-wd needs to be directory with files
 """
 
 
@@ -118,7 +119,7 @@ def ForTheWin(File):
     RollingChunks = SlidingWin(ChunkAvgDF, Length)
     #following OutFile line only works if given file argument is the name of file
     #not the name of the path of the file
-    OutFile = 'Win_' + File
+    OutFile = 'Win_'+str(Window)+'_incr_'+str(Incr)+'_' + File
     RollingChunks.to_csv(OutFile, index = False, sep = '\t', compression = 'gzip',
                          float_format = '%-0.5f')
     print('~' * 40)
@@ -149,7 +150,7 @@ def ForTheWin(File):
 # -----------------------------
 # Setting up parser
 # -----------------------------
-ScriptDescript = '''Sliding Window function on raw read depth files'''
+ScriptDescript = '''Sliding Window function on raw read depth files. -wd needs to be directory with files'''
 
 Parser = argparse.ArgumentParser(description = ScriptDescript)
 Parser.add_argument('-w', '--window', type = int, metavar = 'W',
