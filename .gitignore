@@ -13,4 +13,5 @@ data/divergence_analysis/Paxton
 data/divergence_analysis/divergence_analysis.Rproj
 data/divergence_analysis/.RData
 data/divergence_analysis/.Rhistory
+data/divergence_analysis/*.png
 src/slidingWindow/.idea
