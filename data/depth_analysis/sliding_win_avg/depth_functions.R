@@ -40,9 +40,15 @@ get_bp_pos_vector<-function(table,chr){
   
 }
 
-load_to_table_to_test<-function(male,female){
+#load to table and compensate read count
+load_to_table_to_test<-function(male,female,male_RC,female_RC){
   POF<-read.table(female,header=TRUE)
   male10<-read.table(male,header=TRUE)
+  if(male_RC>female_RC){
+    POF<-read_count_comp(male_RC,female_RC,POF)
+  } else{
+    male10<-read_count_comp(female_RC,male_RC,male10)
+  }
   bp_pos<-get_bp_pos_vector(male10,"XIX")
   logMale10POF <- log2(male10/POF)
   log_graph<-cbind(bp_pos,logMale10POF)
@@ -65,10 +71,17 @@ second_deriv<-function(table,col){
 
 ruff_plot<-function(table,bp_pos,y_axis){
   library(ggplot2)
-  ggplot(table,aes(x=bp_pos,y=y_axis))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+coord_cartesian(ylim = c(-5,5))
+  `log(male/female)`= y_axis
+  ggplot(table,aes(x=bp_pos,y=`log(male/female)`))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+coord_cartesian(ylim = c(-5,5))
 }
 
 ruff_plot_limit<-function(table,bp_pos,y_axis){
   library(ggplot2)
   ggplot(table,aes(x=bp_pos,y=y_axis))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+scale_y_continuous(limits=c(-5,5))
+}
+
+read_count_comp<-function(big_count,small_count,small_samp){
+  ratio = (big_count/small_count)
+  small_samp <- ratio*(small_samp)
+  return(small_samp)
 }
