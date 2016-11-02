@@ -46,7 +46,7 @@ load_to_table_to_test<-function(male,female,male_RC,female_RC){
   male10<-read.table(male,header=TRUE)
   if(male_RC>female_RC){
     POF<-read_count_comp(male_RC,female_RC,POF)
-  } else{
+  } else if(male_RC<female_RC){
     male10<-read_count_comp(female_RC,male_RC,male10)
   }
   bp_pos<-get_bp_pos_vector(male10,"XIX")

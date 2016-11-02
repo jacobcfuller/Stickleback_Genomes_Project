@@ -28,7 +28,7 @@ $(cat << EOF > /home/jcfuller/sub_scripts/read_count_ind_sub.sh
 #PBS -q batch
 #PBS -N ${line}_readCount
 #PBS -l nodes=1:ppn=4
-#PBS -l mem=2gb
+#PBS -l mem=8gb
 #PBS -l walltime=96:00:00
 #PBS -M jacobcfuller93@gmail.com
 #PBS -m ae
