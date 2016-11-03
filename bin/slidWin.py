@@ -122,9 +122,9 @@ def ForTheWin(File):
     OutFile = 'Win_'+str(Window)+'_incr_'+str(Incr)+'_' + File
     RollingChunks.to_csv(OutFile, index = False, sep = '\t', compression = 'gzip',
                          float_format = '%-0.5f')
-    print('~' * 40)
-    print('Total time to create %s was %.2f seconds' % (OutFile, timer() - t0))
-    print('~' * 40)
+    #print('~' * 40)
+    #print('Total time to create %s was %.2f seconds' % (OutFile, timer() - t0))
+    #print('~' * 40)
 
 
 
