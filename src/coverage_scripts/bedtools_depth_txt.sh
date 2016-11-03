@@ -19,7 +19,7 @@ while getopts ":s:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/japan_sea/male/
 
 module load samtools/1.2
 #bedtools v. 2.25.0 causes weird issues
@@ -33,5 +33,5 @@ bedtools genomecov \
   awk '{print $3}' >> ${sample}_XIX_depth.txt
 
 sleep 1s
-echo ${samples}_XIX | tr ' ' '\t' | gzip > PB_${sample}_XIX.txt.gz
-paste ${sample}_XIX_depth.txt | gzip >> PB_${sample}_XIX.txt.gz
+echo ${samples}_XIX | tr ' ' '\t' | gzip > JS_${sample}_XIX.txt.gz
+paste ${sample}_XIX_depth.txt | gzip >> JS_${sample}_XIX.txt.gz
