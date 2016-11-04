@@ -19,3 +19,4 @@ data/divergence_analysis/.RData
 data/divergence_analysis/.Rhistory
 data/divergence_analysis/*.png
 src/slidingWindow/.idea
+src/boundary_finder/.idea/*

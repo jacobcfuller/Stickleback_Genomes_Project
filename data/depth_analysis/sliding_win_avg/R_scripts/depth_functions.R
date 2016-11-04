@@ -53,6 +53,10 @@ if(male_RC>female_RC){
   logMale10POF <- log2(male10/POF)
   log_graph<-cbind(bp_pos,logMale10POF)
   colnames(log_graph)<-c("bp_pos","log(male/female)")
+  #remove NaN
+  log_graph<-na.exclude(log_graph)
+  #remove Inf/-Inf
+  log_graph<-log_graph[is.finite(rowSums(log_graph)),]
   return(log_graph)
 }
 
@@ -62,11 +66,11 @@ if(male_RC>female_RC){
 #####################################################################################
 
 
-#kind of slow
+#really slow
 second_deriv<-function(table,col){
-  line<-loess(col ~ bp_pos, table)
+  line<-loess(col ~ bp_pos,table)
   deriv_2<-(diff(diff(line$fitted)))
-  return(deriv_2)
+  return(data.frame(deriv_2))
 }
 
 ruff_plot<-function(table,bp_pos,y_axis){
@@ -76,7 +80,7 @@ ruff_plot<-function(table,bp_pos,y_axis){
 }
 
 ruff_plot_limit<-function(table,bp_pos,y_axis){
-  library(ggplot2)
+  library(ggplot2) 
   ggplot(table,aes(x=bp_pos,y=y_axis))+geom_point(size=0.3,alpha=0.5)+geom_smooth()+scale_y_continuous(limits=c(-5,5))
 }
 
