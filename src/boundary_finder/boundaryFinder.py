@@ -14,22 +14,27 @@ chrXIX = 20612724
 
 def locationFinder(logDF):
     x = 0
+
     while(x < len(logDF)):
         print("x before loop", x)
         logSum = 0
         avgCounter = 0
         logAvg = 0
+
         if (math.isnan(logDF.iloc[x, 0]) is False):
+            # 1000 value window
             for i in range(1000):
                 if(math.isnan(logDF.iloc[(x+i), 0]) is False):  # this line causes index error
                     avgCounter += 1
                     logSum = logSum + logDF.iloc[(x+i), 0]
+
             logAvg = logSum/avgCounter
-            # print(logAvg)
-            if((x + 1000) < len(logDF)):
+
+            if((x + 1000) < len(logDF)):  # don't go out of  index!
                 x += 1000
             else:
                 x += 1
+        # If value at index is NaN, move on. If not, increment 1000
         else:
             x += 1
 
