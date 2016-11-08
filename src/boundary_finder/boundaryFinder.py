@@ -31,15 +31,13 @@ def takeMaleFemaleLog(male, female):
     '''Takes male and female DataFrames and produces a new log2(male/female)
        DataFrame, setting log2(0/0) to nan.
     '''
-    logDF = pandas.DataFrame()
+    logDF = pandas.DataFrame(index=np.arange(len(male)), columns=['log(male/female)'])
     for x in range(len(male)):
-        malex = male.iloc[x, 0]
-        femalex = female.iloc[x, 0]
-        if malex != 0 and femalex != 0:
-            logX = math.log2(malex/femalex)
+        if male.iloc[x, 0] != 0 and female.iloc[x, 0] != 0:
+            logX = math.log2(male.iloc[x, 0]/female.iloc[x, 0])
         else:
             logX = np.nan
-        logDF[x, 0] = logX
+        logDF.iloc[x, 0] = logX
     return logDF
 
 
@@ -79,8 +77,3 @@ if __name__ == '__main__':
                            footerToSkip)
     femaleSubset = getSubSet("Win_1000_incr_250_POF_543_XIX.txt", rowToSkip,
                              footerToSkip)
-
-    logDF = takeMaleFemaleLog(maleSubset, femaleSubset)
-
-    slidingMeans = logSlidingWindow(logDF)
-    print(slidingMeans)
