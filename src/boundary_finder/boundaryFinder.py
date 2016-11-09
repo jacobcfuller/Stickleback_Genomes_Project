@@ -144,25 +144,43 @@ def getTrueBPLocation(location, inputIncr):
     location = location * inputIncr
     return(location)
 
+
+# ======================== #
+#          Parser          #
+# ======================== #
+
+ScriptDescript = '''Find PAR boundary BP location'''
+Parser = argparse.ArgumentParser(description=ScriptDescript)
+Parser.add_argument('-m', '--maleFile', type=str, metavar='M', required=True)
+Parser.add_argument('-f' '--femaleFile', type=str, metavar='F', required=True)
+
+args = vars(Parser.parse_args())
+
+maleFile = args['maleFile']
+femaleFile = args['femaleFile']
+
+
 # ======================== #
 #           Main           #
 # ======================== #
 
 if __name__ == '__main__':
-    rowsToSkip = getSkipRows(250)
-    footerToSkip = getSkipFooter(250)
+    maleNumLines = getNumLines(maleFile)
+    femaleNumLines = getNumLines(femaleFile)
 
-    male = getSubSet(
-                     "Win_1000_incr_250_POM544_XIX_depth.txt",
-                     rowsToSkip,
-                     footerToSkip
-                                 )
-    female = getSubSet(
-                       "Win_1000_incr_250_POF_543_XIX.txt",
-                       rowsToSkip,
-                       footerToSkip
-                                   )
-    logDF = takeMaleFemaleLog(male, female)
-    #for x in range(len(logDF)):
-    #    print(logDF.iloc[x, 0])
-    locationFinder(logDF)
+    assert maleNumLines == femaleNumLines,
+    "male and female files must be same size"
+
+    inputWinIncr = getInputWinIncr(maleNumLines)
+    rowsToSkip = getSkipRows(inputWinIncr)
+    footerToSkip = getSkipFooter(inputWinIncr)
+
+    maleSubSet = getSubSet(maleFile, rowsToSkip, footerToSkip)
+    femaleSubSet = getSubSet(femaleSubSet, rowsToSkip, footerToSkip)
+    logMaleFemale = takeMaleFemaleLog(maleSubSet, femaleSubSet)
+
+    locationIndex = locationFinder(logMaleFemale)
+
+    trueLocation = getTrueBPLocation(locationIndex, inputWinIncr)
+
+    print(trueLocation)
