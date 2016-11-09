@@ -13,6 +13,23 @@ chrXIX = 20612724
 
 
 def locationFinder(logDF):
+    '''locationFinder takes the log(male/female) dataframe and runs two sliding
+       windows over it. The sliding window is tracking averages, assuming the
+       averages in the PAR is greater than or equal to 0. A negative
+       average is indicative of female coverage being higher than male, i.e.,
+       area on the chromosome that does not recombine with the X. I have thus
+       defined the PAR boundary as the location where logAvg transitions from
+       positive to negative.
+
+       The first sliding window is low resolution, a window of size 100 to find
+       the general area of the PAR.
+
+       The second sliding window backs up 10 indices behind the first
+       determined location, and proceeds to run a sliding window of size 10 for
+       a higher resolution location.
+
+       Returns index of logAvg dataframe corresponding to avg sign change.
+    '''
     x = 0
     logAvg = 0
     while(x < len(logDF) and logAvg >= 0):
@@ -120,6 +137,12 @@ def getSkipFooter(inputIncr):
     '''Figures out how many values to leave out at bottom of text file. '''
     numRowsToExlcude = int(16112724/inputIncr)
     return numRowsToExlcude
+
+
+def getTrueBPLocation(location, inputIncr):
+    location += 6000
+    location = location * inputIncr
+    return(location)
 
 # ======================== #
 #           Main           #
