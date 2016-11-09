@@ -14,31 +14,48 @@ chrXIX = 20612724
 
 def locationFinder(logDF):
     x = 0
-
-    while(x < len(logDF)):
-        print("x before loop", x)
+    logAvg = 0
+    while(x < len(logDF) and logAvg >= 0):
         logSum = 0
         avgCounter = 0
         logAvg = 0
 
         if (math.isnan(logDF.iloc[x, 0]) is False):
-            # 1000 value window
-            for i in range(1000):
-                if(math.isnan(logDF.iloc[(x+i), 0]) is False):  # this line causes index error
-                    avgCounter += 1
-                    logSum = logSum + logDF.iloc[(x+i), 0]
-
-            logAvg = logSum/avgCounter
-
-            if((x + 1000) < len(logDF)):  # don't go out of  index!
-                x += 1000
+            # 100 value window
+            if((x+100) < len(logDF)):
+                for i in range(100):
+                    if(math.isnan(logDF.iloc[(x+i), 0]) is False):
+                        avgCounter += 1
+                        logSum = logSum + logDF.iloc[(x+i), 0]
+                logAvg = logSum/avgCounter
+                x += 100
             else:
-                x += 1
-        # If value at index is NaN, move on. If not, increment 1000
+                break
         else:
             x += 1
+    x = x - 100
 
-        print("x after loop", x)
+    y = x - 10
+    logAvg = 0
+    while(y < (x+50) and logAvg >= 0):
+        logSum = 0
+        avgCounter = 0
+        logAvg = 0
+        if (math.isnan(logDF.iloc[y, 0]) is False):
+            # 10 value window
+            if((y+10) < len(logDF)):
+                for i in range(10):
+                    if(math.isnan(logDF.iloc[(y+i), 0]) is False):
+                        avgCounter += 1
+                        logSum = logSum + logDF.iloc[(y+i), 0]
+                logAvg = logSum/avgCounter
+                y += 10
+            else:
+                break
+        else:
+            y += 1
+    y = y - 10
+    return(y)
 
 
 def getSubSet(file, rowsToSkip, footerToSkip):
@@ -123,4 +140,6 @@ if __name__ == '__main__':
                        footerToSkip
                                    )
     logDF = takeMaleFemaleLog(male, female)
+    #for x in range(len(logDF)):
+    #    print(logDF.iloc[x, 0])
     locationFinder(logDF)
