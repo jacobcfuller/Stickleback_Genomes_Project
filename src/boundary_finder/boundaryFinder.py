@@ -1,5 +1,11 @@
 #!/home/jcfuller/anaconda3/bin/python3.5
 
+'''Program to find PAR boundaries.
+Returns two outputs:
+    1) file of log(male/female) subset
+    2) PAR location
+'''
+
 import argparse
 import pandas
 import math
@@ -44,7 +50,8 @@ def locationFinder(logDF):
                     if(math.isnan(logDF.iloc[(x+i), 0]) is False):
                         avgCounter += 1
                         logSum = logSum + logDF.iloc[(x+i), 0]
-                logAvg = logSum/avgCounter
+                if(avgCounter > 70):
+                    logAvg = logSum/avgCounter
                 x += 100
             else:
                 break
@@ -129,18 +136,19 @@ def getInputWinIncr(numLines):
 
 def getSkipRows(inputIncr):
     '''Figures out how many values to skip at top of text file. '''
-    numRowsToSkip = 1500000/inputIncr
+    numRowsToSkip = 2200000/inputIncr
     return int(numRowsToSkip)
 
 
 def getSkipFooter(inputIncr):
     '''Figures out how many values to leave out at bottom of text file. '''
-    numRowsToExlcude = int(16112724/inputIncr)
+    numRowsToExlcude = int(17712724/inputIncr)
     return numRowsToExlcude
 
 
 def getTrueBPLocation(location, inputIncr):
-    location += 6000
+    numRowsSkipped = getSkipRows(inputIncr)
+    location += numRowsSkipped
     location = location * inputIncr
     return(location)
 
@@ -152,12 +160,15 @@ def getTrueBPLocation(location, inputIncr):
 ScriptDescript = '''Find PAR boundary BP location'''
 Parser = argparse.ArgumentParser(description=ScriptDescript)
 Parser.add_argument('-m', '--maleFile', type=str, metavar='M', required=True)
-Parser.add_argument('-f' '--femaleFile', type=str, metavar='F', required=True)
+Parser.add_argument('-f', '--femaleFile', type=str, metavar='F', required=True)
+Parser.add_argument('-o', '--outfile', type=str, metavar='O', required=True)
 
 args = vars(Parser.parse_args())
 
 maleFile = args['maleFile']
 femaleFile = args['femaleFile']
+output = args['outfile']
+del args
 
 
 # ======================== #
@@ -168,19 +179,20 @@ if __name__ == '__main__':
     maleNumLines = getNumLines(maleFile)
     femaleNumLines = getNumLines(femaleFile)
 
-    assert maleNumLines == femaleNumLines,
-    "male and female files must be same size"
+    assert maleNumLines == femaleNumLines, "male and female files must be same size"
 
     inputWinIncr = getInputWinIncr(maleNumLines)
     rowsToSkip = getSkipRows(inputWinIncr)
     footerToSkip = getSkipFooter(inputWinIncr)
 
     maleSubSet = getSubSet(maleFile, rowsToSkip, footerToSkip)
-    femaleSubSet = getSubSet(femaleSubSet, rowsToSkip, footerToSkip)
+    femaleSubSet = getSubSet(femaleFile, rowsToSkip, footerToSkip)
     logMaleFemale = takeMaleFemaleLog(maleSubSet, femaleSubSet)
+
+    logMaleFemale.to_csv(output)
 
     locationIndex = locationFinder(logMaleFemale)
 
     trueLocation = getTrueBPLocation(locationIndex, inputWinIncr)
 
-    print(trueLocation)
+    print(output+" "+str(trueLocation)+" "+str(locationIndex))
