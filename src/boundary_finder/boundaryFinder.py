@@ -4,6 +4,8 @@
 Returns two outputs:
     1) file of log(male/female) subset
     2) PAR location
+
+How to deal with noise??
 '''
 
 import argparse
@@ -57,7 +59,7 @@ def locationFinder(logDF):
                 break
         else:
             x += 1
-    x = x - 100
+    x = (x - 100)
 
     y = x - 10
     logAvg = 0
@@ -142,7 +144,7 @@ def getSkipRows(inputIncr):
 
 def getSkipFooter(inputIncr):
     '''Figures out how many values to leave out at bottom of text file. '''
-    numRowsToExlcude = int(17712724/inputIncr)
+    numRowsToExlcude = int(17012724/inputIncr)
     return numRowsToExlcude
 
 
