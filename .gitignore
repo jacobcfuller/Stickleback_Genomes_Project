@@ -20,3 +20,7 @@ data/divergence_analysis/.Rhistory
 data/divergence_analysis/*.png
 src/slidingWindow/.idea
 src/boundary_finder/.idea/*
+src/boundary_finder/divergence/*
+src/boundary_finder/japan_sea/*
+src/boundary_finder/pacific_ocean/*
+src/boundary_finder/paxton_lake/*
