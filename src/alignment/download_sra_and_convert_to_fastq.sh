@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#CHANGE LOG OUPUT 
-cd /lustre1/jcfuller/stickleback_fastq
-
 unset accession
 
 # Retrieve SRA accession # from command line argument
@@ -30,6 +27,5 @@ export ftproot=ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra
   mid="${accession:0:6}"
   wget ${ftproot}/${pre}/${mid}/${accession}/${accession}.sra
 
-# Convert .sra files to gzipped fastq files
-module load sratoolkit/latest
+#Convert .sra files to gzipped fastq files
 fastq-dump --split-files --gzip ${accession}.sra

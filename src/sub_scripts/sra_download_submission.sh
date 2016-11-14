@@ -1,25 +1,41 @@
+#!/bin/bash
+
+# Retrieve sample from arg
+while getopts ":s:" opt; do
+  case $opt in
+    s)
+      export fetch=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+while read -r line
+do
+
+$(cat << EOF > /home/jcfuller/sub_scripts/sra_download_submision_ind.sh
 #PBS -S /bin/bash
 #PBS -q batch
-#PBS -N sra_download_convert
-#PBS -l nodes=1:ppn=48:mwnode
-#PBS -l mem=120gb
+#PBS -N ${line}_depth
+#PBS -l nodes=1:ppn=4
+#PBS -l mem=2gb
 #PBS -l walltime=96:00:00
-#PBS -M jacobcfuller93@gmail.com
 #PBS -m ae
 #PBS -j oe
 
-fetch=stickleback_run_accessions.txt
+/lustre1/jcfuller/Stickleback_Genomes_Project/src/download_sra_and_convert_to_fastq.sh -a ${line}
+EOF
+)
 
-arr=()
-while read -r line
-do
-    arr+=("$line")
+sleep 1s
+qsub /home/jcfuller/sub_scripts/sra_download_submision_ind.sh
+sleep 1s
+
 done < ${fetch}
-
-shell_opt="a:"$(echo ${arr[@]} | sed 's/ /;/g')
-
-
-./scripts/parallel_bash.py \
-    -s ~/scripts/download_sra_and_convert_to_fastq.sh \
-    -t 48 \
-    ${shell_opt}
