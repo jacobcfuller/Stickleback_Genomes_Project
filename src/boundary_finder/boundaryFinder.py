@@ -12,6 +12,7 @@ import argparse
 import pandas
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 
 chrXIX = 20612724
 
@@ -84,6 +85,17 @@ def locationFinder(logDF):
     return(y)
 
 
+def plotLogDF(logDF):
+    xData = logDF.index
+    yData = logDF['log(male/female)']
+    plt.figure(num=1, figsize=(8,6))
+    plt.title('log(male/female)', size=14)
+    plt.xlabel('bpPos', size=12)
+    plt.ylabel('log(male/female)', size=12)
+    plt.plot(xData, yData, 'ro')
+    plt.savefig('plot1.png', format='png')
+
+
 def getSubSet(file, rowsToSkip, footerToSkip):
     '''Return the relevant subset of the table to be analyzed.
        Header set to 0.
@@ -110,8 +122,9 @@ def takeMaleFemaleLog(male, female):
     else:
         male = male*(femaleSum[0]/maleSum[0])
 
+    index = np.arange(len(male))
     logDF = pandas.DataFrame(
-                             index=np.arange(len(male)),
+                             index=index,
                              columns=['log(male/female)']
                                                          )
     for x in range(len(male)):
@@ -156,45 +169,40 @@ def getTrueBPLocation(location, inputIncr):
 
 
 # ======================== #
-#          Parser          #
-# ======================== #
-
-ScriptDescript = '''Find PAR boundary BP location'''
-Parser = argparse.ArgumentParser(description=ScriptDescript)
-Parser.add_argument('-m', '--maleFile', type=str, metavar='M', required=True)
-Parser.add_argument('-f', '--femaleFile', type=str, metavar='F', required=True)
-Parser.add_argument('-o', '--outfile', type=str, metavar='O', required=True)
-
-args = vars(Parser.parse_args())
-
-maleFile = args['maleFile']
-femaleFile = args['femaleFile']
-output = args['outfile']
-del args
-
-
-# ======================== #
 #           Main           #
 # ======================== #
 
 if __name__ == '__main__':
+    # Set up parser
+    ScriptDescript = '''Find PAR boundary BP location'''
+    Parser = argparse.ArgumentParser(description=ScriptDescript)
+    Parser.add_argument('-m', '--maleFile', type=str, metavar='M', required=True)
+    Parser.add_argument('-f', '--femaleFile', type=str, metavar='F', required=True)
+    Parser.add_argument('-o', '--outfile', type=str, metavar='O', required=True)
+    args = vars(Parser.parse_args())
+
+    # Set args to variables
+    maleFile = args['maleFile']
+    femaleFile = args['femaleFile']
+    output = args['outfile']
+    del args
+
+    # Check that male & female files are the same size
     maleNumLines = getNumLines(maleFile)
     femaleNumLines = getNumLines(femaleFile)
-
     assert maleNumLines == femaleNumLines, "male and female files must be same size"
 
     inputWinIncr = getInputWinIncr(maleNumLines)
     rowsToSkip = getSkipRows(inputWinIncr)
     footerToSkip = getSkipFooter(inputWinIncr)
-
     maleSubSet = getSubSet(maleFile, rowsToSkip, footerToSkip)
     femaleSubSet = getSubSet(femaleFile, rowsToSkip, footerToSkip)
     logMaleFemale = takeMaleFemaleLog(maleSubSet, femaleSubSet)
-
-    logMaleFemale.to_csv(output)
-
     locationIndex = locationFinder(logMaleFemale)
-
     trueLocation = getTrueBPLocation(locationIndex, inputWinIncr)
 
-    print(output+" "+str(trueLocation)+" "+str(locationIndex))
+    plotLogDF(logMaleFemale)
+
+    #logMaleFemale.to_csv(output)
+
+    #print(output+" "+str(trueLocation)+" "+str(locationIndex))
