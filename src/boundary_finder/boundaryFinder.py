@@ -119,13 +119,6 @@ def takeMaleFemaleLog(male, female):
        DataFrame, setting log2(0/0) to nan.
        Compensates for coverage difference.
     '''
-    maleSum = male.sum()
-    femaleSum = female.sum()
-    if(maleSum[0] > femaleSum[0]):
-        female = female*(maleSum[0]/femaleSum[0])
-    else:
-        male = male*(femaleSum[0]/maleSum[0])
-
     index = np.arange(len(male))
     logDF = pandas.DataFrame(
                              index=index,
@@ -138,6 +131,16 @@ def takeMaleFemaleLog(male, female):
             logX = np.nan
         logDF.iloc[x, 0] = logX
     return logDF
+
+
+def getRatio(male, female):
+    '''Find male/female coverage ratio. Multiply maleSubset by returned value
+    '''
+    if(male > female):
+        ratio = female/male
+    else:
+        ratio = male/female
+    return ratio
 
 
 def getNumLines(file):
@@ -183,11 +186,15 @@ if __name__ == '__main__':
     Parser.add_argument('-m', '--maleFile', type=str, metavar='M', required=True)
     Parser.add_argument('-f', '--femaleFile', type=str, metavar='F', required=True)
     Parser.add_argument('-o', '--outfile', type=str, metavar='O', required=True)
+    Parser.add_argument('-mr', '--malereads', type=int, metavar='MR', required=True)
+    Parser.add_argument('-fr', '--femalereads', type=int, metavar='FR', required=True)
     args = vars(Parser.parse_args())
 
     # Set args to variables
     maleFile = args['maleFile']
     femaleFile = args['femaleFile']
+    maleReads = args['malereads']
+    femaleReads = args['femalereads']
     output = args['outfile']
     del args
 
@@ -196,11 +203,14 @@ if __name__ == '__main__':
     femaleNumLines = getNumLines(femaleFile)
     assert maleNumLines == femaleNumLines, "male and female files must be same size"
 
+    ratio = getRatio(maleReads, femaleReads)
+
     inputWinIncr = getInputWinIncr(maleNumLines)
     rowsToSkip = getSkipRows(inputWinIncr)
     footerToSkip = getSkipFooter(inputWinIncr)
     maleSubSet = getSubSet(maleFile, rowsToSkip, footerToSkip)
     femaleSubSet = getSubSet(femaleFile, rowsToSkip, footerToSkip)
+    maleSubSet = maleSubSet*ratio
     logMaleFemale = takeMaleFemaleLog(maleSubSet, femaleSubSet)
     locationIndex = locationFinder(logMaleFemale)
     trueLocation = getTrueBPLocation(locationIndex, inputWinIncr)
