@@ -85,15 +85,19 @@ def locationFinder(logDF):
     return(y)
 
 
-def plotLogDF(logDF):
-    xData = logDF.index
+def plotLogDF(logDF, output, inputIncr):
+    '''Create .png image of log(male/female) plot
+    '''
+    incr = inputIncr
+    xData = (logDF.index+getSkipRows(incr))*incr
     yData = logDF['log(male/female)']
-    plt.figure(num=1, figsize=(8,6))
+    plt.figure(num=1, figsize=(12, 6))
     plt.title('log(male/female)', size=14)
     plt.xlabel('bpPos', size=12)
     plt.ylabel('log(male/female)', size=12)
-    plt.plot(xData, yData, 'ro')
-    plt.savefig('plot1.png', format='png')
+    plt.scatter(xData, yData, marker=".")
+    plt.autoscale(tight=True)
+    plt.savefig(output+".png", format='png', bbox_inches='tight')
 
 
 def getSubSet(file, rowsToSkip, footerToSkip):
@@ -201,7 +205,7 @@ if __name__ == '__main__':
     locationIndex = locationFinder(logMaleFemale)
     trueLocation = getTrueBPLocation(locationIndex, inputWinIncr)
 
-    plotLogDF(logMaleFemale)
+    plotLogDF(logMaleFemale, output, inputWinIncr)
 
     #logMaleFemale.to_csv(output)
 
