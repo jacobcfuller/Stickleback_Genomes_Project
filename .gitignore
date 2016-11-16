@@ -25,3 +25,4 @@ src/boundary_finder/japan_sea/*
 src/boundary_finder/pacific_ocean/*
 src/boundary_finder/paxton_lake/*
 src/boundary_finder/*.txt
+src/boundary_finder/*.png
