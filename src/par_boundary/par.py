@@ -1,18 +1,13 @@
 #!/home/jcfuller/anaconda3/bin/python3.5
 
-'''Program to find PAR boundaries.
-Returns two outputs:
-    1) file of log(male/female) subset
-    2) PAR location
-
-How to deal with noise??
-'''
 
 import argparse
 import pandas
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+
+__author__ = 'Jacob C. Fuller'
 
 chrXIX = 20612724
 
@@ -22,22 +17,7 @@ chrXIX = 20612724
 
 
 def locationFinder(logDF):
-    '''locationFinder takes the log(male/female) dataframe and runs two sliding
-       windows over it. The sliding window is tracking averages, assuming the
-       averages in the PAR is greater than or equal to 0. A negative
-       average is indicative of female coverage being higher than male, i.e.,
-       area on the chromosome that does not recombine with the X. I have thus
-       defined the PAR boundary as the location where logAvg transitions from
-       positive to negative.
-
-       The first sliding window is low resolution, a window of size 100 to find
-       the general area of the PAR.
-
-       The second sliding window backs up 10 indices behind the first
-       determined location, and proceeds to run a sliding window of size 10 for
-       a higher resolution location.
-
-       Returns index of logAvg dataframe corresponding to avg sign change.
+    '''does not function yet
     '''
     x = 0
     logAvg = 0
