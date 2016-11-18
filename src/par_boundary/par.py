@@ -17,7 +17,7 @@ chrXIX = 20612724
 
 
 def locationFinder(logDF):
-    '''does not function yet
+    '''does not work yet
     '''
     x = 0
     logAvg = 0
