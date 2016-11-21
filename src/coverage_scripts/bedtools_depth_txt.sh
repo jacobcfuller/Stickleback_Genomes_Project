@@ -33,5 +33,5 @@ bedtools genomecov \
   awk '{print $3}' >> ${sample}_XIX_depth.txt
 
 sleep 1s
-echo ${sample}_XIX | tr ' ' '\t' | gzip > JS_${sample}_XIX.txt.gz
-paste ${sample}_XIX_depth.txt | gzip >> JS_${sample}_XIX.txt.gz
+echo ${sample}_XIX | tr ' ' '\t' | gzip > ${sample}_XIX.txt.gz
+paste ${sample}_XIX_depth.txt | gzip >> ${sample}_XIX.txt.gz

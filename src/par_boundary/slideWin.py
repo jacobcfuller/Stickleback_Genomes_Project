@@ -28,7 +28,7 @@ def getChunks(File):
     rawDepthTab = pd.read_table(File,
                                 compression='gzip',
                                 delim_whitespace=True,
-                                chunksize=5000)
+                                chunksize=incr)
 
     chunkAvgs = (chunk.mean() for chunk in rawDepthTab)
 
@@ -75,7 +75,7 @@ def slidingWin(chunkAvgDF, tableLength):
     '''
     # Calculates a rolling mean of tableLength 'chuWin', then shifts it so it starts
     # with numbers, then it removes the NaN at the end
-    rollingChunks = (chunkAvgDF.rolling(window=2)
+    rollingChunks = (chunkAvgDF.rolling(window=chuWin)
                                .mean()
                                .dropna()
                                .reset_index(drop=True))

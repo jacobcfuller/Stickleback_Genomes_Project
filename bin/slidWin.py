@@ -100,7 +100,7 @@ def SlidingWin(ChunkAvgDF, Length):
     ColNames = list(ChunkAvgDF)
     # Calculates a rolling mean of length 'chuWin', then shifts it so it starts with
     # numbers, then it removes the NaN at the end
-    RollingChunks = ChunkAvgDF.rolling(window = chuWin).mean().dropna().reset_index(drop = True)
+    RollingChunks = ChunkAvgDF.rolling(window=chuWin).mean().dropna().reset_index(drop = True)
     for i in range(len(ColNames)):
         RollingChunks.iloc[-1, i] = CleanEnd(RollingChunks, ChunkAvgDF, Length, i)
     return RollingChunks
