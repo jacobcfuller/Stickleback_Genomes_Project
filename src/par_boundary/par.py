@@ -65,11 +65,10 @@ def locationFinder(logDF):
     return(y)
 
 
-def plotLogDF(logDF, output, inputIncr):
+def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
-    incr = inputIncr
-    xData = (logDF.index+getSkipRows(incr))*incr
+    xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
     yData = logDF['log(male/female)']
     plt.figure(num=1, figsize=(12, 6))
     plt.title('log(male/female)', size=14)
@@ -80,14 +79,14 @@ def plotLogDF(logDF, output, inputIncr):
     plt.savefig(output+".png", format='png', bbox_inches='tight')
 
 
-def getSubSet(file):
+def getSubSet(inputFile):
     '''Return the relevant subset of the table to be analyzed.
        Header set to 0.
     '''
-    rowsToSkip = getSkipRows(file)
-    footerToSkip = getSkipFooter(file)
+    rowsToSkip = getSkipRows(inputFile)
+    footerToSkip = getSkipFooter(inputFile)
     fileSubSet = pandas.read_table(
-                                   file,
+                                   inputFile,
                                    engine='python',
                                    skiprows=rowsToSkip,
                                    skipfooter=footerToSkip,
@@ -125,37 +124,37 @@ def getRatio(male, female):
     return ratio
 
 
-def getNumLines(file):
+def getNumLines(inputFile):
     '''Counts the number of lines for input file. Subtract one for header. '''
     # Subtract 1 for header
-    numLines = sum(1 for line in open(file)) - 1
+    numLines = sum(1 for line in open(inputFile)) - 1
     return numLines
 
 
-def getInputWinIncr(file):
+def getInputWinIncr(inputFile):
     '''Determines window size from previous sliding window in pipeline. '''
-    numLines = getNumLines(file)
+    numLines = getNumLines(inputFile)
     inputIncr = chrXIX/numLines
     return int(inputIncr)
 
 
-def getSkipRows(file):
+def getSkipRows(inputFile):
     '''Figures out how many values to skip at top of text file. '''
-    inputIncr = getInputWinIncr(file)
+    inputIncr = getInputWinIncr(inputFile)
     numRowsToSkip = 2200000/inputIncr
     return int(numRowsToSkip)
 
 
-def getSkipFooter(file):
+def getSkipFooter(inputFile):
     '''Figures out how many values to leave out at bottom of text file. '''
-    inputIncr = getInputWinIncr(file)
+    inputIncr = getInputWinIncr(inputFile)
     numRowsToExlcude = int(17012724/inputIncr)
     return numRowsToExlcude
 
 
-def getTrueBPLocation(file, logDF):
-    numRowsSkipped = getSkipRows(file)
-    inputIncr = getInputWinIncr(file)
+def getTrueBPLocation(inputFile, logDF):
+    numRowsSkipped = getSkipRows(inputFile)
+    inputIncr = getInputWinIncr(inputFile)
     location = locationFinder(logDF)
     location += numRowsSkipped
     location = location * inputIncr
@@ -163,13 +162,9 @@ def getTrueBPLocation(file, logDF):
 
 
 def getLogTable(mFile, fFile, mReads, fReads):
-    numLines = getNumLines(mFile)
     ratio = getRatio(mReads, fReads)
-    inputWinIncr = getInputWinIncr(numLines)
-    rowsToSkip = getSkipRows(inputWinIncr)
-    footerToSkip = getSkipFooter(inputWinIncr)
-    maleSubSet = getSubSet(maleFile, rowsToSkip, footerToSkip)
-    femaleSubSet = getSubSet(femaleFile, rowsToSkip, footerToSkip)
+    maleSubSet = getSubSet(mFile)
+    femaleSubSet = getSubSet(fFile)
     maleSubSet = maleSubSet*ratio
     logMaleFemale = takeMaleFemaleLog(maleSubSet, femaleSubSet)
 
@@ -205,7 +200,7 @@ if __name__ == '__main__':
 
     logMaleFemale = getLogTable(maleFile, femaleFile, maleReads, femaleReads)
 
-    plotLogDF(logMaleFemale, output, getInputWinIncr(maleFile))
+    plotLogDF(logMaleFemale, output, maleFile)
 
     #logMaleFemale.to_csv(output)
 
