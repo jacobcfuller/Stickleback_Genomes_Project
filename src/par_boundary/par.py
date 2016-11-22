@@ -68,6 +68,7 @@ def locationFinder(logDF):
 def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
+    NCount = np.loadtxt("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/src/par_boundary/NCount.txt")
     xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
     yData = logDF['log(male/female)']
     plt.figure(num=1, figsize=(12, 6))
@@ -75,6 +76,7 @@ def plotLogDF(logDF, output, inputFile):
     plt.xlabel('bpPos', size=12)
     plt.ylabel('log(male/female)', size=12)
     plt.scatter(xData, yData, marker=".")
+    plt.scatter(xData, NCount, c='r')
     plt.autoscale(tight=True)
     plt.savefig(output+".png", format='png', bbox_inches='tight')
 
