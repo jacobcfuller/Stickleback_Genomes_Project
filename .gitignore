@@ -3,3 +3,4 @@ results
 data
 src/slidingWindow/.idea
 src/boundary_finder/.idea/*
+src/par_boundary/*.txt
