@@ -23,7 +23,7 @@ while line:
             NCount += 1
     if lineCount is 5:
         lineCount = 0
-        if NCount > 125:
+        if NCount >= 125:
             NCountList.append(0)
         else:
             NCountList.append(float('nan'))
