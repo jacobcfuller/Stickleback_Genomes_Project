@@ -20,6 +20,6 @@ while getopts ":s:d:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/${dir}
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/${dir}/${sample}
 
 /lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py addRG ${sample}_q.bam -c 8

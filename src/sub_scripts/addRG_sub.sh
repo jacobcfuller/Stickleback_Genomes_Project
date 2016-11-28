@@ -30,7 +30,6 @@ $(cat << EOF > /home/jcfuller/sub_scripts/addRG_individual_sub.sh
 #PBS -l nodes=1:ppn=8
 #PBS -l mem=8gb
 #PBS -l walltime=96:00:00
-#PBS -M jacobcfuller93@gmail.com
 #PBS -m ae
 #PBS -j oe
 
