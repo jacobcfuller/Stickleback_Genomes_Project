@@ -19,6 +19,7 @@ while getopts ":a:" opt; do
   esac
 done
 
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/fastq/liu
 # Root directory for SRA database
 export ftproot=ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra
 
@@ -29,3 +30,5 @@ export ftproot=ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra
 
 #Convert .sra files to gzipped fastq files
 fastq-dump --split-files --gzip ${accession}.sra
+
+rm ${accession}.sra
