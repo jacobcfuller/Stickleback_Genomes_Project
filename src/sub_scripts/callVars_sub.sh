@@ -27,10 +27,9 @@ $(cat << EOF > /home/jcfuller/sub_scripts/callVars_individual_sub.sh
 #PBS -S /bin/bash
 #PBS -q batch
 #PBS -N ${line}_callVars
-#PBS -l nodes=1:ppn=12
+#PBS -l nodes=1:ppn=8
 #PBS -l mem=20gb
 #PBS -l walltime=96:00:00
-#PBS -M jacobcfuller93@gmail.com
 #PBS -m ae
 #PBS -j oe
 

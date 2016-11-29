@@ -28,7 +28,6 @@ export ftproot=ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra
   mid="${accession:0:6}"
   wget ${ftproot}/${pre}/${mid}/${accession}/${accession}.sra
 
+module load sratoolkit/latest
 #Convert .sra files to gzipped fastq files
 fastq-dump --split-files --gzip ${accession}.sra
-
-rm ${accession}.sra

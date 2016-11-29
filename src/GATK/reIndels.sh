@@ -20,8 +20,11 @@ while getopts ":s:d:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/${dir}
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/${dir}/${sample}
 
 /lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py \
   reIndels ${sample}_q_mD.bam \
   -r /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
+  -c 8
+
+rm ${sample}_q_rG.bam

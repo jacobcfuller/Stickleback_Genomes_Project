@@ -25,7 +25,7 @@ $(cat << EOF > /home/jcfuller/sub_scripts/sra_download_submision_ind.sh
 #PBS -q batch
 #PBS -N ${line}_depth
 #PBS -l nodes=1:ppn=1
-#PBS -l mem=2gb
+#PBS -l mem=1gb
 #PBS -l walltime=96:00:00
 #PBS -m ae
 #PBS -j oe
