@@ -69,14 +69,36 @@ def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
     NCount = np.loadtxt("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/src/par_boundary/NCount.txt")
+    infDF = getInfTable(logDF)
     xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
     yData = logDF['log(male/female)']
     plt.figure(num=1, figsize=(12, 6))
-    plt.title('log(male/female)', size=14)
+    plt.title("log2 "+output, size=14)
     plt.xlabel('bpPos', size=12)
-    plt.ylabel('log(male/female)', size=12)
-    plt.scatter(xData, yData, marker=".")
-    plt.scatter(xData, NCount, c='r')
+    plt.ylabel('log(maleCov/femaleCov)', size=12)
+    plt.plot(xData,
+             yData,
+             'b.',
+             #alpha=0.5,
+             mec='blue',
+             mew=0.0,
+             label='log2(male/female)')
+    plt.plot(xData,
+             NCount,
+             'r.',
+             #alpha=0.5,
+             mec='red',
+             mew=0.0,
+             label='N region')
+    inf = infDF['inf']
+    plt.plot(xData,
+             inf,
+             'y.',
+             #alpha=0.3,
+             mec='yellow',
+             mew=0.0,
+             label='log2() = +/-inf')
+    plt.legend(loc='upper center')
     plt.autoscale(tight=True)
     plt.savefig(output+".png", format='png', bbox_inches='tight')
 
@@ -99,8 +121,7 @@ def getSubSet(inputFile):
 
 def takeMaleFemaleLog(male, female):
     '''Takes male and female DataFrames and produces a new log2(male/female)
-       DataFrame, setting log2(0/0) to nan.
-       Compensates for coverage difference.
+       DataFrame.
     '''
     index = np.arange(len(male))
     logDF = pandas.DataFrame(
@@ -111,9 +132,25 @@ def takeMaleFemaleLog(male, female):
         if male.iloc[x, 0] != 0 and female.iloc[x, 0] != 0:
             logX = math.log2(male.iloc[x, 0]/female.iloc[x, 0])
         else:
-            logX = np.nan
+            if male.iloc[x, 0] == 0:
+                logX = -np.inf
+            if female.iloc[x, 0] == 0:
+                logX = np.inf
         logDF.iloc[x, 0] = logX
     return logDF
+
+
+def getInfTable(logDF):
+    infIndex = np.arange(len(logDF))
+    infDF = pandas.DataFrame(index=infIndex,
+                             columns=['inf'])
+    for x in range(len(logDF)):
+        if np.isinf(logDF.iloc[x, 0]):
+            infDFValue = 0
+        else:
+            infDFValue = np.nan
+        infDF.iloc[x, 0] = infDFValue
+    return(infDF)
 
 
 def getRatio(male, female):
