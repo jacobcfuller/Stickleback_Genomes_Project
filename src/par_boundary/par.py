@@ -69,7 +69,7 @@ def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
     NCount = np.loadtxt("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/src/par_boundary/NCount.txt")
-    infDF = getInfTable(logDF)
+    posInfDF, negInfDF = getInfTable(logDF)
     xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
     yData = logDF['log(male/female)']
     plt.figure(num=1, figsize=(12, 6))
@@ -90,14 +90,22 @@ def plotLogDF(logDF, output, inputFile):
              mec='red',
              mew=0.0,
              label='N region')
-    inf = infDF['inf']
+    posInf = posInfDF['posInf']
     plt.plot(xData,
-             inf,
+             posInf,
+             'g.',
+             #alpha=0.3,
+             mec='green',
+             mew=0.0,
+             label='log2() = inf')
+    negInf = negInfDF['negInf']
+    plt.plot(xData,
+             negInf,
              'y.',
              #alpha=0.3,
              mec='yellow',
              mew=0.0,
-             label='log2() = +/-inf')
+             label='log2() = -inf')
     plt.legend(loc='upper center')
     plt.autoscale(tight=True)
     plt.savefig(output+".png", format='png', bbox_inches='tight')
@@ -142,15 +150,24 @@ def takeMaleFemaleLog(male, female):
 
 def getInfTable(logDF):
     infIndex = np.arange(len(logDF))
-    infDF = pandas.DataFrame(index=infIndex,
-                             columns=['inf'])
+    posInfDF = pandas.DataFrame(index=infIndex,
+                                columns=['posInf'])
     for x in range(len(logDF)):
-        if np.isinf(logDF.iloc[x, 0]):
-            infDFValue = 0
+        if np.isinf(logDF.iloc[x, 0]) and np.sign(logDF.iloc[x, 0]) == 1:
+            posInfDFValue = 0
         else:
-            infDFValue = np.nan
-        infDF.iloc[x, 0] = infDFValue
-    return(infDF)
+            posInfDFValue = np.nan
+        posInfDF.iloc[x, 0] = posInfDFValue
+
+    negInfDF = pandas.DataFrame(index=infIndex,
+                                columns=['negInf'])
+    for x in range(len(logDF)):
+        if np.isinf(logDF.iloc[x, 0]) and np.sign(logDF.iloc[x, 0]) == 1:
+            negInfDFValue = 0
+        else:
+            negInfDFValue = np.nan
+        negInfDF.iloc[x, 0] = negInfDFValue
+    return posInfDF, negInfDF
 
 
 def getRatio(male, female):
@@ -241,6 +258,6 @@ if __name__ == '__main__':
 
     plotLogDF(logMaleFemale, output, maleFile)
 
-    #logMaleFemale.to_csv(output)
+    #logMaleFemale.to_csv(output+".txt")
 
     #print(output+" "+str(trueLocation)+" "+str(locationIndex))
