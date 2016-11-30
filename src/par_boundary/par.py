@@ -78,37 +78,41 @@ def plotLogDF(logDF, output, inputFile):
     plt.ylabel('log(maleCov/femaleCov)', size=12)
     plt.plot(xData,
              yData,
-             'b.',
-             #alpha=0.5,
+             'bo',
+             alpha=0.5,
+             ms=4.0,
              mec='blue',
              mew=0.0,
              label='log2(male/female)')
     plt.plot(xData,
              NCount,
-             'r.',
+             'mo',
              #alpha=0.5,
-             mec='red',
+             ms=4.0,
+             mec='magenta',
              mew=0.0,
              label='N region')
     posInf = posInfDF['posInf']
     plt.plot(xData,
              posInf,
-             'g.',
+             'yo',
              #alpha=0.3,
-             mec='green',
+             ms=4.0,
+             mec='yellow',
              mew=0.0,
              label='log2() = inf')
     negInf = negInfDF['negInf']
     plt.plot(xData,
              negInf,
-             'y.',
+             'ro',
              #alpha=0.3,
-             mec='yellow',
+             ms=4.0,
+             mec='red',
              mew=0.0,
              label='log2() = -inf')
     plt.legend(loc='upper center')
     plt.autoscale(tight=True)
-    plt.savefig(output+".png", format='png', bbox_inches='tight')
+    plt.savefig(output+".pdf", format='pdf', bbox_inches='tight')
 
 
 def getSubSet(inputFile):
@@ -162,7 +166,7 @@ def getInfTable(logDF):
     negInfDF = pandas.DataFrame(index=infIndex,
                                 columns=['negInf'])
     for x in range(len(logDF)):
-        if np.isinf(logDF.iloc[x, 0]) and np.sign(logDF.iloc[x, 0]) == 1:
+        if np.isinf(logDF.iloc[x, 0]) and np.sign(logDF.iloc[x, 0]) == -1:
             negInfDFValue = 0
         else:
             negInfDFValue = np.nan
@@ -204,7 +208,7 @@ def getSkipRows(inputFile):
 def getSkipFooter(inputFile):
     '''Figures out how many values to leave out at bottom of text file. '''
     inputIncr = getInputWinIncr(inputFile)
-    numRowsToExlcude = int(17012724/inputIncr)
+    numRowsToExlcude = int(17612724/inputIncr)
     return numRowsToExlcude
 
 
@@ -258,6 +262,6 @@ if __name__ == '__main__':
 
     plotLogDF(logMaleFemale, output, maleFile)
 
-    #logMaleFemale.to_csv(output+".txt")
+    logMaleFemale.to_csv(output+".txt")
 
     #print(output+" "+str(trueLocation)+" "+str(locationIndex))

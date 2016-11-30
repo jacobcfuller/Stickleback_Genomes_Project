@@ -31,7 +31,7 @@ while line:
         index += 1
 chrXIX.close()
 
-subset = NCountList[8800:14399]
+subset = NCountList[8800:11999]
 
 nplist = np.asarray(subset)
 
