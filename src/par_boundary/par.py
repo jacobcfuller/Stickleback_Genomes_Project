@@ -110,7 +110,7 @@ def plotLogDF(logDF, output, inputFile):
              mec='red',
              mew=0.0,
              label='log2() = -inf')
-    plt.legend(loc='upper center')
+    plt.legend(loc='best')
     plt.autoscale(tight=True)
     plt.savefig(output+".pdf", format='pdf', bbox_inches='tight')
 
@@ -177,10 +177,7 @@ def getInfTable(logDF):
 def getRatio(male, female):
     '''Find male/female coverage ratio. Multiply maleSubset by returned value
     '''
-    if(male > female):
-        ratio = female/male
-    else:
-        ratio = male/female
+    ratio = female/male
     return ratio
 
 
