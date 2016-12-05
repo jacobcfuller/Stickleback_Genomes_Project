@@ -15,56 +15,6 @@ chrXIX = 20612724
 #       Functions          #
 # ======================== #
 
-
-def locationFinder(logDF):
-    '''does not work yet
-    '''
-    x = 0
-    logAvg = 0
-    while(x < len(logDF) and logAvg >= 0):
-        logSum = 0
-        avgCounter = 0
-        logAvg = 0
-
-        if (math.isnan(logDF.iloc[x, 0]) is False):
-            # 100 value window
-            if((x+100) < len(logDF)):
-                for i in range(100):
-                    if(math.isnan(logDF.iloc[(x+i), 0]) is False):
-                        avgCounter += 1
-                        logSum = logSum + logDF.iloc[(x+i), 0]
-                if(avgCounter > 70):
-                    logAvg = logSum/avgCounter
-                x += 100
-            else:
-                break
-        else:
-            x += 1
-    x = (x - 100)
-
-    y = x - 10
-    logAvg = 0
-    while(y < (x+50) and logAvg >= 0):
-        logSum = 0
-        avgCounter = 0
-        logAvg = 0
-        if (math.isnan(logDF.iloc[y, 0]) is False):
-            # 10 value window
-            if((y+10) < len(logDF)):
-                for i in range(10):
-                    if(math.isnan(logDF.iloc[(y+i), 0]) is False):
-                        avgCounter += 1
-                        logSum = logSum + logDF.iloc[(y+i), 0]
-                logAvg = logSum/avgCounter
-                y += 10
-            else:
-                break
-        else:
-            y += 1
-    y = y - 10
-    return(y)
-
-
 def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
@@ -174,10 +124,10 @@ def getInfTable(logDF):
     return posInfDF, negInfDF
 
 
-def getRatio(male, female):
+def getRatio(maleReads, femaleReads):
     '''Find male/female coverage ratio. Multiply maleSubset by returned value
     '''
-    ratio = female/male
+    ratio = femaleReads/maleReads
     return ratio
 
 
@@ -222,8 +172,8 @@ def getLogTable(mFile, fFile, mReads, fReads):
     ratio = getRatio(mReads, fReads)
     maleSubSet = getSubSet(mFile)
     femaleSubSet = getSubSet(fFile)
-    maleSubSet = maleSubSet*ratio
-    logMaleFemale = takeMaleFemaleLog(maleSubSet, femaleSubSet)
+    maleSubSetComp = maleSubSet*ratio
+    logMaleFemale = takeMaleFemaleLog(maleSubSetComp, femaleSubSet)
 
     return logMaleFemale
 
@@ -238,8 +188,8 @@ if __name__ == '__main__':
     Parser.add_argument('-m', '--maleFile', type=str, metavar='M', required=True)
     Parser.add_argument('-f', '--femaleFile', type=str, metavar='F', required=True)
     Parser.add_argument('-o', '--outfile', type=str, metavar='O', required=True)
-    Parser.add_argument('-mr', '--malereads', type=int, metavar='MR', required=True)
-    Parser.add_argument('-fr', '--femalereads', type=int, metavar='FR', required=True)
+    Parser.add_argument('-mr', '--malereads', type=float, metavar='MR', required=True)
+    Parser.add_argument('-fr', '--femalereads', type=float, metavar='FR', required=True)
     args = vars(Parser.parse_args())
 
     # Set args to variables
@@ -260,5 +210,3 @@ if __name__ == '__main__':
     plotLogDF(logMaleFemale, output, maleFile)
 
     logMaleFemale.to_csv(output+".txt")
-
-    #print(output+" "+str(trueLocation)+" "+str(locationIndex))
