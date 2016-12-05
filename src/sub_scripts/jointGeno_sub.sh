@@ -1,18 +1,23 @@
 #PBS -S /bin/bash
 #PBS -q batch
 #PBS -N jointGeno_JM
-#PBS -l nodes=1:ppn=12
-#PBS -l mem=40
+#PBS -l nodes=1:ppn=8
+#PBS -l mem=20
 #PBS -l walltime=96:00:00
-#PBS -M jacobcfuller93@gmail.com
 #PBS -m ae
 #PBS -j oe
 
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/fastq/feulner/Ca_L
+
 
 /lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py jointGeno \
-  -o paxton\
+  -o Ca_L\
   -c 8 \
   -r /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
-  male9_q_cV.g.vcf  male10_q_cV.g.vcf  male11_q_cV.g.vcf  male12_q_cV.g.vcf
+  BS44/BS44_q_cV.g.vcf \
+  BS46/BS46_q_cV.g.vcf \
+  BS48/BS48_q_cV.g.vcf \
+  BS50b/BS50b_q_cV.g.vcf \
+  BS52b/BS52b_q_cV.g.vcf \
+  BS54/BS54_q_cV.g.vcf 

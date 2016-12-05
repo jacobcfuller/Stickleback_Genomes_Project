@@ -3,10 +3,13 @@
 unset sample
 
 # Retrieve sample from arg
-while getopts ":s:" opt; do
+while getopts ":s:d:" opt; do
   case $opt in
     s)
       export sample=$OPTARG
+      ;;
+    d)
+      export dir=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -19,7 +22,7 @@ while getopts ":s:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/japan_sea/male/
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/fastq/feulner/${dir}/${sample}
 
 module load samtools/1.2
 #bedtools v. 2.25.0 causes weird issues

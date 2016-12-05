@@ -34,10 +34,10 @@ assert all([x.endswith('.g.vcf') for x in files]), \
 # Making cores list
 # =====================
 
-# `GenotypeGVCFs` allows multithreading, but if we specify 1 core, we'll skip the 
+# `GenotypeGVCFs` allows multithreading, but if we specify 1 core, we'll skip the
 # `-nt` argument altogether.
 
-if cores > 1:
+if cores = 1:
     coreString = ''
 else:
     coreString = '-nt %i' % cores
@@ -57,30 +57,28 @@ varString = '--variant %s' % ' \\\n--variant '.join(files)
 # =====================
 
 def runJointGeno(filePath):
-    
+
     """Run command to do joint genotyping on gVCF files."""
-    
+
     directory, filename = base.splitPath(filePath)
-    
-    command = base.jointGeno % {'varS': varString, 'ref': ref, 'coreS': coreString, 
+
+    command = base.jointGeno % {'varS': varString, 'ref': ref, 'coreS': coreString,
                                 'out': filename, 'moreOpts': moreOpts}
-    
+
     logFileName = filePath + '_jG.log'
-    
+
     # Run command and save output to log file
     base.cleanRun(commandString = command, logFile = logFileName,
                   workingDir = directory, logOpenMode = 'wt')
-    
+
     return
 
 
 
 # =====================
-# `main` function to run 
+# `main` function to run
 # command on all file(s)
 # =====================
 
 def main():
     runJointGeno(outName)
-
-

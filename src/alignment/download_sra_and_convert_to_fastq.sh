@@ -19,7 +19,7 @@ while getopts ":a:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/fastq/liu
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/fastq/feulner/No_L/BS62
 # Root directory for SRA database
 export ftproot=ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra
 
