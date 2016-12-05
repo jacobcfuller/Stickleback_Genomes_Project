@@ -5,3 +5,8 @@ src/slidingWindow/.idea
 src/boundary_finder/.idea/*
 src/par_boundary/*.txt
 useful_commands.sh
+src/sub_scripts
+src/alignment
+src/breakdancer
+src/coverage_scripts
+src/GATK
