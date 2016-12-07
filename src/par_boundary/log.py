@@ -62,6 +62,7 @@ def plotLogDF(logDF, output, inputFile):
              label='log2() = -inf')
     plt.legend(loc='best')
     plt.autoscale(tight=True)
+    plt.axis(ymin=-3, ymax=2)
     plt.savefig(output+".pdf", format='pdf', bbox_inches='tight')
 
 
