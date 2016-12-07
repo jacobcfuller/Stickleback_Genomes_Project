@@ -33,7 +33,7 @@ $(cat << EOF > /home/jcfuller/stick_alignment_individual_sub.sh
 #PBS -j oe
 
 
-/lustre1/jcfuller/Stickleback_Genomes_Project/src/alignment.sh -s ${line}
+/lustre1/jcfuller/Stickleback_Genomes_Project/src/alignment_masked.sh -s ${line}
 EOF
 )
 

@@ -22,19 +22,19 @@ while getopts ":s:d:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/fastq/feulner/${dir}/${sample}
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/${dir}/${sample}
 
 module load samtools/1.2
 #bedtools v. 2.25.0 causes weird issues
 module unload bedtools/2.25.0
 module load bedtools/2.24.0
 
-samtools view -b ${sample}.bam chrXIX | \
+samtools view -@ 2 -b ${sample}_q.bam PGA_scaffold0__28_contigs__length_12341907 | \
 bedtools genomecov \
   -d \
   -ibam stdin | \
-  awk '{print $3}' >> ${sample}_XIX_depth.txt
+  awk '{print $3}' >> ${sample}_Y_depth.txt
 
 sleep 1s
-echo ${sample}_XIX | tr ' ' '\t' | gzip > ${sample}_XIX.txt.gz
-paste ${sample}_XIX_depth.txt | gzip >> ${sample}_XIX.txt.gz
+echo ${sample}_Y | tr ' ' '\t' | gzip > ${sample}_Y.txt.gz
+paste ${sample}_Y_depth.txt | gzip >> ${sample}_Y.txt.gz

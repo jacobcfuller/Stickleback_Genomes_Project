@@ -27,8 +27,8 @@ $(cat << EOF > /home/jcfuller/sub_scripts/bedtools_sub_inside.sh
 #PBS -S /bin/bash
 #PBS -q batch
 #PBS -N ${line}_depth
-#PBS -l nodes=1:ppn=1
-#PBS -l mem=2gb
+#PBS -l nodes=1:ppn=3
+#PBS -l mem=6gb
 #PBS -l walltime=96:00:00
 #PBS -m ae
 #PBS -j oe
