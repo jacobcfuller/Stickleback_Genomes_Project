@@ -15,6 +15,7 @@ chrXIX = 20612724
 #       Functions          #
 # ======================== #
 
+
 def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
@@ -37,7 +38,6 @@ def plotLogDF(logDF, output, inputFile):
     plt.plot(xData,
              NCount,
              'mo',
-             #alpha=0.5,
              ms=4.0,
              mec='magenta',
              mew=0.0,
@@ -46,7 +46,6 @@ def plotLogDF(logDF, output, inputFile):
     plt.plot(xData,
              posInf,
              'yo',
-             #alpha=0.3,
              ms=4.0,
              mec='yellow',
              mew=0.0,
@@ -55,7 +54,6 @@ def plotLogDF(logDF, output, inputFile):
     plt.plot(xData,
              negInf,
              'ro',
-             #alpha=0.3,
              ms=4.0,
              mec='red',
              mew=0.0,
@@ -158,15 +156,6 @@ def getSkipFooter(inputFile):
     inputIncr = getInputWinIncr(inputFile)
     numRowsToExlcude = int(17612724/inputIncr)
     return numRowsToExlcude
-
-
-def getTrueBPLocation(inputFile, logDF):
-    numRowsSkipped = getSkipRows(inputFile)
-    inputIncr = getInputWinIncr(inputFile)
-    location = locationFinder(logDF)
-    location += numRowsSkipped
-    location = location * inputIncr
-    return(location)
 
 
 def getLogTable(mFile, fFile, mReads, fReads):
