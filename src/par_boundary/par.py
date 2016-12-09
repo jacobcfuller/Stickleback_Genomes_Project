@@ -1,5 +1,7 @@
 #!/home/jcfuller/anaconda3/bin/python3.5
-
+'''Algorithm designed to locate the PAR boundary based on Log2(male/female)
+coverage data. It's not particularly fast...
+'''
 
 import math
 import pandas as pd
@@ -7,14 +9,8 @@ import numpy as np
 
 
 # will adjust later to take in any file - now just for testing
-def makeDF(logTxt):
-    #POM544_POF543 = "/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Japan_Sea/unmasked/JS537M_JS553F_unmasked.txt"
-    #POM544_POF543 = "/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Pacific_Ocean/unmasked/POM544_POF543_unmasked.txt"
-    #POM544_POF543 = "/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Paxton_lake/pax10_POM543_unmasked.txt"
-    #POM544_POF543 = "/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Pacific_Ocean/masked/POM544_POF543_masked.txt"
-    #POM544_POF543 = "/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Paxton_lake/pax10_JSF553_unmasked.txt"
-    #POM544_POF543 = "/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Japan_Sea/masked/JS537M_JS553F_masked.txt"
-    df = pd.read_csv(logTxt)
+def makeDF(logTxtFile):
+    df = pd.read_csv(logTxtFile)
     bp = np.arange(len(df))
 
     # create true bp position, not just index count
@@ -30,7 +26,8 @@ def makeDF(logTxt):
     return(narrowDF)
 
 
-def findBoundary(logDF):
+def findBoundary(logTxtFile):
+    logDF = makeDF(logTxtFile)
     for index in range(len(logDF)):
         winCount = 0
         winSum = 0
@@ -40,25 +37,13 @@ def findBoundary(logDF):
                 # If nan, not inf, and less than 1 (male cov shouldn't be >1)
                 if(math.isnan(logDF.iloc[index+x, 0]) is False and
                    math.isinf(logDF.iloc[index+x, 0]) is False and
-                   logDF.iloc[index+x, 0] < 1):
+                   logDF.iloc[index+x, 0] < 1 and
+                   logDF.iloc[index+x, 0] > -2):
                         winCount += 1
                         winSum = winSum + logDF.iloc[index+x, 0]
 
             if(winCount > 0):
                 logAvg = winSum / winCount
-            print(logAvg)
 
-        if logAvg <= -.5 and winCount > 75:
-            print(index)
+        if logAvg <= -.75 and winCount > 75:
             return(logDF.iloc[index].name)
-
-
-# ======================== #
-#           Main           #
-# ======================== #
-
-if __name__ == '__main__':
-
-    DF = makeDF()
-    index = findBoundary(DF)
-    print(index)

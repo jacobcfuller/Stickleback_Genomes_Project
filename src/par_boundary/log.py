@@ -24,6 +24,7 @@ def plotLogDF(logDF, output, inputFile):
     posInfDF, negInfDF = getInfTable(logDF)
     xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
     yData = logDF['log(male/female)']
+    boundary = par.findBoundary(output+".txt")
     plt.figure(num=1, figsize=(12, 6))
     plt.title("log2 "+output, size=14)
     plt.xlabel('bpPos', size=12)
@@ -59,6 +60,7 @@ def plotLogDF(logDF, output, inputFile):
              mec='red',
              mew=0.0,
              label='log2() = -inf')
+    plt.plot((boundary, boundary), (-3, 2), 'k-')
     plt.legend(loc='best')
     plt.autoscale(tight=True)
     plt.axis(ymin=-3, ymax=2)
@@ -197,7 +199,5 @@ if __name__ == '__main__':
     assert maleNumLines == femaleNumLines, "male and female files must be same size"
 
     logMaleFemale = getLogTable(maleFile, femaleFile, maleReads, femaleReads)
-
-    plotLogDF(logMaleFemale, output, maleFile)
-
     logMaleFemale.to_csv(output+".txt")
+    plotLogDF(logMaleFemale, output, maleFile)
