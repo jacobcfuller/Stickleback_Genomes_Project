@@ -6,6 +6,7 @@ import pandas
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import par
 
 __author__ = 'Jacob C. Fuller'
 
