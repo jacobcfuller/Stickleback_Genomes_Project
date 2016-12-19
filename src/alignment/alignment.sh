@@ -19,7 +19,7 @@ while getopts ":s:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/fastq/feulner/No_L/${sample}
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/feulner/${sample}
 
 # Align
 export read1_list=`ls -m *_1.fastq.gz | tr -d ' \n'`
@@ -36,21 +36,21 @@ if [ "$#" -gt 0 ]
       >& ${sample}_summary.txt
 
   else
-      bowtie2 --no-unal --very-sensitive -x /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bowtie/Glazer/Glazer \
+      bowtie2 -p 8 --no-unal --very-sensitive -x /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bowtie/Glazer/Glazer \
       -U ${read1_list} \
       -S ${sample}.sam \
       >& ${sample}_${runNum}_summary.txt
 fi
 module load samtools/latest
 # Sort, index
-samtools view -bh -@ 7 ${sample}.sam > ${sample}.bam
+samtools view -bh -@ 8 ${sample}.sam > ${sample}.bam
 samtools sort -o ${sample}_sorted.bam -T ${sample}_s -@ 8 ${sample}.bam
 mv ${sample}_sorted.bam ${sample}.bam
 samtools index -b ${sample}.bam
 
-# Filter by whether MAPQ score ≥ 20
+# Filter by whether MAPQ score ≥ 30
 if [ ${mapFilter} = true ]
 then
-    samtools view -bh -q 30 -@ 7 ${sample}.bam > ${sample}_q.bam
+    samtools view -bh -q 30 -@ 8 ${sample}.bam > ${sample}_q.bam
     samtools index -b ${sample}_q.bam
 fi

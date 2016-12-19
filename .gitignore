@@ -11,3 +11,4 @@ src/breakdancer
 src/coverage_scripts
 src/GATK
 src/lumpy
+src/par_boundary/__pycache__

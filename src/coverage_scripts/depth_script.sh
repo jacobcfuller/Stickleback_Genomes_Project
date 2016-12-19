@@ -23,12 +23,12 @@ while getopts ":s:c:n:" opt; do
   esac
 done
 
-samtools view -b ${sample}.bam chr${chr_num} | \
+samtools view -b ${sample}_q.bam chrXIX | \
 bedtools genomecov \
   -d \
   -ibam stdin | \
-  awk '{print $3}' >> ${sample}_${chr_num}_depth.txt
+  awk '{print $3}' >> ${sample}_XIX.txt
 
 sleep 1s
-echo ${name}_${chr_num} | tr ' ' '\t' | gzip > ${name}_${chr_num}.txt.gz
-paste ${sample}_${chr_num}_depth.txt | gzip >> ${name}_${chr_num}.txt.gz
+echo ${sample}_XIX | tr ' ' '\t' | gzip > ${sample}_XIX.txt.gz
+paste ${sample}_XIX.txt | gzip >> ${sample}_XIX.txt.gz

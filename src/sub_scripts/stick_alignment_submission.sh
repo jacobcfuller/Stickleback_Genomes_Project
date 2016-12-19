@@ -21,24 +21,24 @@ while read -r line
 do
 
 
-$(cat << EOF > /home/jcfuller/stick_alignment_individual_sub.sh
+$(cat << EOF > /home/jcfuller/sub_scripts/stick_alignment_individual_sub.sh
 
 #PBS -S /bin/bash
 #PBS -q batch
 #PBS -N ${line}
-#PBS -l nodes=1:ppn=8
+#PBS -l nodes=1:ppn=8:AMD
 #PBS -l mem=16gb
 #PBS -l walltime=96:00:00
 #PBS -m ae
 #PBS -j oe
 
 
-/lustre1/jcfuller/Stickleback_Genomes_Project/src/alignment_masked.sh -s ${line}
+/home/jcfuller/scripts/alignment.sh -s ${line}
 EOF
 )
 
 sleep 1s
-qsub /home/jcfuller/stick_alignment_individual_sub.sh
+qsub /home/jcfuller/sub_scripts/stick_alignment_individual_sub.sh
 sleep 1s
 
 done < ${fetch}
