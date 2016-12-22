@@ -13,3 +13,4 @@ src/GATK
 src/lumpy
 src/par_boundary/__pycache__
 bin/svtyper-master
+src/sandbox
