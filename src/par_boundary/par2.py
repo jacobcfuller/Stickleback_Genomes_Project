@@ -1,7 +1,7 @@
 #!/home/jcfuller/anaconda3/bin/python3.5
 
 '''Find par boundary with 2 sliding windows that run over log2(male/female)
-read depthfiles
+read depth files
 '''
 
 import math
@@ -31,7 +31,8 @@ def makeDF(logTxtFile):
     return(logDF)
 
 
-# gets first last and middle avgs
+# gets first last and middle avgs. Only really need middle.
+# kept others for testing
 def getFirstMidLastAvg(logDF):
     firstDF = logDF.loc[2200000:2300000]
     lastDF = logDF.loc[2899500:2999500]
@@ -57,9 +58,7 @@ def parFinder(logTxtFile):
                        .mean())
             avg = (win1Avg['log']+win2Avg['log'])/2
             if(math.isclose(avg, middle, abs_tol=0.01)):
-                print("middle:", middle)
-                print("avg:", avg)
-                print("index:", index+winSize+15000)
+                return(index+winSize+15000)
 
 
 # ======================== #
@@ -67,4 +66,5 @@ def parFinder(logTxtFile):
 # ======================== #
 
 if __name__ == '__main__':
-    parFinder("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Pacific_Ocean/unmasked/POM544_POF543_unmasked.txt")
+    # just for testing now. should return 2612750.
+    print(parFinder("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Pacific_Ocean/unmasked/POM544_POF543_unmasked.txt"))
