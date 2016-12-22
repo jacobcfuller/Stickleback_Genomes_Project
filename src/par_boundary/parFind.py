@@ -25,7 +25,7 @@ def plotLogDF(logDF, output, inputFile):
     xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
     yData = logDF['log(male/female)']
     boundary = par2.parFinder(output+".txt")
-    plt.figure(num=1, figsize=(12, 6))
+    plt.figure(num=1, figsize=(14, 7))
     plt.title("log2 "+output, size=14)
     plt.xlabel('bpPos', size=12)
     plt.ylabel('log(maleCov/femaleCov)', size=12)
@@ -60,7 +60,10 @@ def plotLogDF(logDF, output, inputFile):
              mec='red',
              mew=0.0,
              label='log2() = -inf')
-    plt.plot((boundary, boundary), (-3, 2), 'k-')
+    plt.plot((boundary, boundary),
+             (-3, 2),
+             'k-',
+             label='PAR boundary = %d' % boundary)
     plt.legend(loc='best')
     plt.autoscale(tight=True)
     plt.axis(ymin=-3, ymax=2)
