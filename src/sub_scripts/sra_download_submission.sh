@@ -1,10 +1,16 @@
 #!/bin/bash
 
 # Retrieve sample from arg
-while getopts ":s:" opt; do
+while getopts ":a:p:d:" opt; do
   case $opt in
-    s)
+    a)
       export fetch=$OPTARG
+      ;;
+    d)
+      export dir=$OPTARG
+      ;;
+    p)
+      export pop=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -30,7 +36,7 @@ $(cat << EOF > /home/jcfuller/sub_scripts/sra_download_submision_ind.sh
 #PBS -m ae
 #PBS -j oe
 
-/home/jcfuller/scripts/download_sra_and_convert_to_fastq.sh -s ${line}
+/home/jcfuller/scripts/download_sra_and_convert_to_fastq.sh -a ${line} -d ${dir} -p ${pop}
 EOF
 )
 

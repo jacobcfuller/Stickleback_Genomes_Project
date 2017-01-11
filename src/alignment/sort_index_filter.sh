@@ -17,16 +17,11 @@ while getopts ":s:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/bam/PaxtonBenthicAlignment
-
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/feulner/${sample}
 
 module load samtools/latest
-
-#Sort, index
-samtools sort -o ${sample}_sorted.bam -T ${sample}_s ${sample}.bam
-mv ${sample}_sorted.bam ${sample}.bam
-samtools index -b ${sample}.bam
-
-# Filter by whether MAPQ score ≥ 20
-samtools view -bh -q 20 ${sample}.bam > ${sample}_q.bam
-samtools index -b ${sample}_q.bam
+# Sort, index
+samtools view -bh -q 30 -@ 7 ${sample}.sam > ${sample}_y.bam
+samtools sort -o ${sample}_sorted.bam -T ${sample}_s -@ 8 ${sample}_y.bam
+mv ${sample}_sorted.bam ${sample}_y.bam
+samtools index -b ${sample}_y.bam

@@ -23,8 +23,6 @@ done
 cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/${dir}/${sample}
 
 /lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py \
-  reIndels ${sample}_q_mD.bam \
-  -r /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
+  reIndels ${sample}_y_mD.bam \
+  -r /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/unmasked_glazer_Y.fa \
   -c 8
-
-rm ${sample}_q_rG.bam

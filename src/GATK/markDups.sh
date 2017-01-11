@@ -22,5 +22,5 @@ done
 
 cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/${dir}/${sample}
 
-/lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py markDups ${sample}_q_rG.bam \
+/lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py markDups ${sample}_y_rG.bam \
 -c 8

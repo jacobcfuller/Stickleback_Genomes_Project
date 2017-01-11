@@ -22,4 +22,4 @@ done
 
 cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/${dir}/${sample}
 
-/lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py addRG ${sample}_q.bam -c 8
+/lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py addRG ${sample}_y.bam -c 8

@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # Retrieve sample from arg
-while getopts ":s:" opt; do
+while getopts ":s:p:" opt; do
   case $opt in
     s)
       export fetch=$OPTARG
+      ;;
+    p)
+      export pop=${OPTARG}
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -33,7 +36,7 @@ $(cat << EOF > /home/jcfuller/sub_scripts/stick_alignment_individual_sub.sh
 #PBS -j oe
 
 
-/home/jcfuller/scripts/alignment.sh -s ${line}
+/home/jcfuller/scripts/alignment_Y.sh -s ${line} -p ${pop}
 EOF
 )
 

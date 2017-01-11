@@ -3,10 +3,16 @@
 unset accession
 
 # Retrieve SRA accession # from command line argument
-while getopts ":s:" opt; do
+while getopts ":p:d:a:" opt; do
   case $opt in
-    s)
+    a)
       export accession=$OPTARG
+      ;;
+    d)
+      export dir=$OPTARG
+      ;;
+    p)
+      export pop=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -19,7 +25,7 @@ while getopts ":s:" opt; do
   esac
 done
 
-cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/JS_FF
+cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/feulner/${dir}/${pop}
 # Root directory for SRA database
 export ftproot=ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra
 

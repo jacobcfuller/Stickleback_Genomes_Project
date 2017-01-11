@@ -24,5 +24,5 @@ cd /lustre1/jcfuller/Stickleback_Genomes_Project/data/genome/${dir}/${sample}
 
 /lustre1/jcfuller/Stickleback_Genomes_Project/bin/GATKpipe/GATKpipe.py \
   callVars ${sample}_q_rI.bam \
-  -r /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/revisedAssemblyUnmasked.fa \
+  -r /lustre1/jcfuller/Stickleback_Genomes_Project/doc/ref/unmasked_glazer_Y.fa \
   -c 8
