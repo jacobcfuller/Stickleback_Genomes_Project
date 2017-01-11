@@ -1,6 +1,7 @@
 #!/home/jcfuller/anaconda3/bin/python3.5
 
-'''Find par boundary with 2 sliding windows that run over log2(male/female)
+'''
+Find par boundary with 2 sliding windows that run over log2(male/female)
 read depth files
 '''
 
@@ -42,12 +43,10 @@ def getFirstMidLastAvg(logDF):
     return(first, middle, last)
 
 
-#def infSpot(logDF, winSize, win2Sep):
-
-
 def parFinder(logTxtFile):
     logDF = makeDF(logTxtFile)
     first, middle, last = getFirstMidLastAvg(logDF)
+    logDF = logDF.loc[2550000:2999500]
     win2Sep = 20000
     winSize = 10000
     indexComp = winSize+15000
@@ -61,26 +60,15 @@ def parFinder(logTxtFile):
             win2Avg = (logDF.loc[(index+win2Sep):(index+win2Sep+winSize)]
                        .mean())
             avg = (win1Avg['log']+win2Avg['log'])/2
-            print("index:", (index+indexComp),
-                  "1:", win1Avg['log'],
-                  "2:", win2Avg['log'],
-                  "avg:", avg)
-            #if(math.isclose(avg, middle, abs_tol=0.01) and
-            #   (first+.05) > win1Avg['log'] and
-            #   (-1) < win2Avg['log'] < middle):
-            #        print(first, middle, last)
-            #        return(index+indexComp)
-
-            # Not sure how the abs_tol or rel_tol works but I think it could be useful
-            if(math.isclose(avg, middle, abs_tol=0.01) and
-               math.isclose(win1Avg['log'], first, abs_tol=0.1) and
-               math.isclose(win2Avg['log'], last, abs_tol=0.1)):
+            if(math.isclose(avg, middle, rel_tol=0.05) and
+               win1Avg['log'] > win2Avg['log']):
                     print(first, middle, last)
                     return(index+indexComp)
+    print(first, middle, last)
 # ======================== #
 #           Main           #
 # ======================== #
 
 if __name__ == '__main__':
-    # just for testing now. should return 2612750.
+    # just for testing. should return 2612750.
     parFinder("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Pacific_Ocean/unmasked/POM544_POF543_unmasked.txt")

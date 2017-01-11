@@ -20,6 +20,7 @@ chrXIX = 20612724
 def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
+    # N count needs to be modified to reflect table length change
     #NCount = np.loadtxt("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/src/par_boundary/NCount.txt")
     posInfDF, negInfDF = getInfTable(logDF)
     xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
@@ -182,11 +183,16 @@ if __name__ == '__main__':
     # Set up parser
     ScriptDescript = '''Find PAR boundary BP location'''
     Parser = argparse.ArgumentParser(description=ScriptDescript)
-    Parser.add_argument('-m', '--maleFile', type=str, metavar='M', required=True)
-    Parser.add_argument('-f', '--femaleFile', type=str, metavar='F', required=True)
-    Parser.add_argument('-o', '--outfile', type=str, metavar='O', required=True)
-    Parser.add_argument('-mr', '--malereads', type=float, metavar='MR', required=True)
-    Parser.add_argument('-fr', '--femalereads', type=float, metavar='FR', required=True)
+    Parser.add_argument('-m', '--maleFile', type=str, metavar='M',
+                        required=True)
+    Parser.add_argument('-f', '--femaleFile', type=str, metavar='F',
+                        required=True)
+    Parser.add_argument('-o', '--outfile', type=str, metavar='O',
+                        required=True)
+    Parser.add_argument('-mr', '--malereads', type=float, metavar='MR',
+                        required=True)
+    Parser.add_argument('-fr', '--femalereads', type=float, metavar='FR',
+                        required=True)
     args = vars(Parser.parse_args())
 
     # Set args to variables
