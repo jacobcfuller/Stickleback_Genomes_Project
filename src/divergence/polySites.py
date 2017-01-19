@@ -31,14 +31,17 @@ def fillInZeros(maleDF, index, winCount, incr):
         return winCount
 
 
+#def tableEnd(maleDF, femaleDF, index, incr):
+
+
 def slideWindow(maleFile, femaleFile, incr):
     '''Sliding window count of SNPs that are present in male Y VCF, but not
        female, assuming that these are unique Y chr polymorphisms.
        Prints bp position and snp count for that window.
     '''
-    # file header
     mDF = makeDF(maleFile)
     fDF = makeDF(femaleFile)
+    # file header
     print("pos", '\t', 'snp #')
     snpCount = 0
     winCount = 1
@@ -47,6 +50,9 @@ def slideWindow(maleFile, femaleFile, incr):
         # If SNP call doesn't exist in female, count
         if((mDF.iloc[index]['POS'] in fDF['POS'].values) is False):
             snpCount += 1
+        # this may need to be modified, but right now fixes table end    
+        if(index == (len(mDF)-1)):
+            return (print((incr*(winCount)), '\t', snpCount))
         # need to figure out tail end of dataframe
         if(mDF.iloc[index+1]['POS'] >= (incr*winCount)):
             print((incr*winCount), '\t', snpCount)
@@ -76,6 +82,6 @@ if __name__ == '__main__':
     # Set args to variables
     maleFile = args['maleFile']
     femaleFile = args['femaleFile']
-    incr = args['increment']
+    incr = int(args['increment'])
     del args
     slideWindow(maleFile, femaleFile, incr)
