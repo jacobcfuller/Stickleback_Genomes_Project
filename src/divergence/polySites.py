@@ -24,7 +24,7 @@ def fillInZeros(maleDF, index, winCount, incr):
     '''
     mDF = maleDF
     if(mDF.iloc[index+1]['POS'] >= (incr*winCount)):
-        print((incr*winCount), '\t', '0')
+        print(str(incr*winCount)+'\t'+'0')
         winCount += 1
         return fillInZeros(mDF, index, winCount, incr)
     else:
@@ -42,7 +42,7 @@ def slideWindow(maleFile, femaleFile, incr):
     mDF = makeDF(maleFile)
     fDF = makeDF(femaleFile)
     # file header
-    print("pos", '\t', 'snp #')
+    print("pos"+'\t'+'snp #')
     snpCount = 0
     winCount = 1
     # remember DF is 0-index
@@ -50,12 +50,12 @@ def slideWindow(maleFile, femaleFile, incr):
         # If SNP call doesn't exist in female, count
         if((mDF.iloc[index]['POS'] in fDF['POS'].values) is False):
             snpCount += 1
-        # this may need to be modified, but right now fixes table end    
+        # this may need to be modified, but right now fixes table end
         if(index == (len(mDF)-1)):
-            return (print((incr*(winCount)), '\t', snpCount))
+            return (print(str(incr*winCount)+'\t'+str(snpCount)))
         # need to figure out tail end of dataframe
         if(mDF.iloc[index+1]['POS'] >= (incr*winCount)):
-            print((incr*winCount), '\t', snpCount)
+            print(str(incr*winCount)+'\t'+str(snpCount))
             # reset counter
             snpCount = 0
             # check if there are actually snps in the next window
