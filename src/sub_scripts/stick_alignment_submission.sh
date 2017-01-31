@@ -6,9 +6,6 @@ while getopts ":s:p:" opt; do
     s)
       export fetch=$OPTARG
       ;;
-    p)
-      export pop=${OPTARG}
-      ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -36,7 +33,7 @@ $(cat << EOF > /home/jcfuller/sub_scripts/stick_alignment_individual_sub.sh
 #PBS -j oe
 
 
-/home/jcfuller/scripts/alignment_Y.sh -s ${line} -p ${pop}
+/home/jcfuller/scripts/alignment_Y.sh -s ${line}
 EOF
 )
 

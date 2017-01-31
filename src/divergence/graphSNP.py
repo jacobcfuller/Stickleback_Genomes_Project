@@ -2,6 +2,7 @@
 
 import argparse
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='snp table')
@@ -10,15 +11,12 @@ args = vars(parser.parse_args())
 
 dataFile = args['file']
 
-snpDF = pd.read_table(dataFile, delimiter='\t')
+snpDF = pd.read_table(dataFile, delimiter='\t', index_col=0)
 
-plt.figure(num=1, figsize=(15, 5))
-plt.bar(left=snpDF['pos'],
-        width=0.1,
-        height=snpDF['snp #'],
-        color='r')
+ax = snpDF.plot(figsize=(15, 5))
 plt.xlabel('Y pos(bp)', size=12)
 plt.ylabel('SNP #', size=12)
+plt.legend(loc='best')
 plt.title(dataFile[:(len(dataFile)-4)]+' 1000bp Sliding Window Count', size=12)
 plt.autoscale(axis='x', tight=True)
 plt.savefig(dataFile[:(len(dataFile)-4)]+".pdf",
