@@ -15,3 +15,4 @@ src/par_boundary/__pycache__
 bin/svtyper-master
 src/sandbox
 src/*/*txt
+bin/
