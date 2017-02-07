@@ -20,13 +20,13 @@ def importDepth():
     return(popDFs)
 
 
-def avgPops(DFdict):
+def normPops(DFdict):
     # table population with their individual aligned read counts
     tablePath = "/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/doc/reads.csv"
     # import into dataframe, only use individual name column with associated read
     reads = pd.read_csv(tablePath, usecols=['Ind', 'Aligned Reads'])
 
-    # Go through each population stored in DFdict, and normalize read counts
+    # Go through each population stored in DFdict, and get highest read count
     popReads = dict()
     absMax = 0
     for x in DFdict:
@@ -39,19 +39,28 @@ def avgPops(DFdict):
             name = ind[:len(ind)-2]
             indRead = reads.loc[reads['Ind'] == name]['Aligned Reads'].values.item(0)
             popReads[ind] = int(indRead)
-
             if(popReads[ind] > maxRead):
                 maxRead = popReads[ind]
-
         if(maxRead > absMax):
             absMax = maxRead
 
+    # normalize read count
+    for x in DFdict:
         df = DFdict[x]
-        for ind in list(DFdict[x]):
-            df[ind] = df[ind] * (maxRead/popReads[ind])
+        for name in list(DFdict[x]):
+            df[name] = df[name] * (absMax/popReads[name])
         DFdict[x] = df
-    return(DFdict, absMax, popReads)
 
+    return(DFdict)
+
+
+def avgPops(DFdict):
+    popAvgDict = dict()
+    for x in DFdict:
+        df = DFdict[x]
+        popAvgDict[x] = df.mean(axis=1)
+
+    return(popAvgDict)
 
 def graphDepth(dfAVGdict, out):
     for df in dfAVGdict:
@@ -82,12 +91,8 @@ if __name__ == '__main__':
     #parser.add_argument('-o', '--out', type=str, metavar='O', required=True)
     #parser.add_argument('folder', metavar='F', type=str, help='path to file')
     #args = vars(parser.parse_args())
-#
-    #out = args['out']
-    #cov = args['cov']
-    #df = importDepth(args['folder'], cov)
+
     dfdict = importDepth()
-    print(dfdict['G1_L'])
-    dfdict, absmax, pop = avgPops(dfdict)
-    print(dfdict['G1_L'])
-    #graphDepth(avg, "test")
+    dfdict = normPops(dfdict)
+    popAvgDict = avgPops(dfdict)
+    graphDepth(popAvgDict, "test")
