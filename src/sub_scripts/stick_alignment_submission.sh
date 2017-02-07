@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # Retrieve sample from arg
-while getopts ":s:p:" opt; do
+while getopts ":s:d:" opt; do
   case $opt in
     s)
-      export fetch=$OPTARG
+      export line=$OPTARG
+      ;;
+    d)
+      export dir=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -16,10 +19,6 @@ while getopts ":s:p:" opt; do
       ;;
   esac
 done
-
-while read -r line
-do
-
 
 $(cat << EOF > /home/jcfuller/sub_scripts/stick_alignment_individual_sub.sh
 
@@ -33,12 +32,10 @@ $(cat << EOF > /home/jcfuller/sub_scripts/stick_alignment_individual_sub.sh
 #PBS -j oe
 
 
-/home/jcfuller/scripts/alignment_Y.sh -s ${line}
+/home/jcfuller/scripts/alignment_Y.sh -s ${line} -d ${dir}
 EOF
 )
 
 sleep 1s
 qsub /home/jcfuller/sub_scripts/stick_alignment_individual_sub.sh
 sleep 1s
-
-done < ${fetch}
