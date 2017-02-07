@@ -30,7 +30,6 @@ def avgPops(DFdict):
     popReads = dict()
     absMax = 0
     for x in DFdict:
-        print(x)
         # x = pop group
         maxRead = 0
         for ind in list(DFdict[x]):
@@ -41,20 +40,17 @@ def avgPops(DFdict):
             indRead = reads.loc[reads['Ind'] == name]['Aligned Reads'].values.item(0)
             popReads[ind] = int(indRead)
 
-            print(ind, popReads[ind])
-
             if(popReads[ind] > maxRead):
                 maxRead = popReads[ind]
 
-        print(maxRead)
-
         if(maxRead > absMax):
             absMax = maxRead
-        for ind in list(DFdict[x]):
-            print(ind, (maxRead/popReads[ind]))
 
-            df = DFdict[x]
+        df = DFdict[x]
+        for ind in list(DFdict[x]):
             df[ind] = df[ind] * (maxRead/popReads[ind])
+        DFdict[x] = df
+    return(DFdict, absMax, popReads)
 
 
 def graphDepth(dfAVGdict, out):
@@ -91,5 +87,7 @@ if __name__ == '__main__':
     #cov = args['cov']
     #df = importDepth(args['folder'], cov)
     dfdict = importDepth()
-    avg = avgPops(dfdict)
+    print(dfdict['G1_L'])
+    dfdict, absmax, pop = avgPops(dfdict)
+    print(dfdict['G1_L'])
     #graphDepth(avg, "test")
