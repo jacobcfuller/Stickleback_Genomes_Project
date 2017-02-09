@@ -16,3 +16,4 @@ bin/svtyper-master
 src/sandbox
 src/*/*txt
 bin/
+src/divergence/__pycache__
