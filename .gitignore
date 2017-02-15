@@ -17,3 +17,5 @@ src/sandbox
 src/*/*txt
 bin/
 src/divergence/__pycache__
+src/divergence/*.pdf
+src/divergence/*.txt
