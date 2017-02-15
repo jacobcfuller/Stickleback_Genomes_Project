@@ -13,6 +13,10 @@ depthDirPath = ("/home/jcfuller/Documents/White_lab/"
 
 
 def importDepth():
+    '''Go into subdirectories to fetch all sliding window depth files
+
+    output: Dictionary of population DataFrames
+    '''
     popDFs = dict()
     for d in os.listdir(depthDirPath):
         if os.path.isdir(depthDirPath+d):
@@ -25,6 +29,12 @@ def importDepth():
 
 
 def normPops(DFdict):
+    '''Imports table of individual aligned read counts into DataFrame. Finds
+    the highest read count, then multiplies all others by (highest/individual).
+
+    input:DataFrame from importDepth().
+    output: normalized version of DFdict
+    '''
     # table population with their individual aligned read counts
     tablePath = ("/home/jcfuller/Documents/White_lab/"
                  "Stickleback_Genomes_Project/doc/reads.csv")
