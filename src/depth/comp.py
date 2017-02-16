@@ -106,10 +106,13 @@ def graph(logDF):
              mec='red',
              mew=0.0,
              label='N')
-    # plt.ylim(-4, 20)
+    plt.ylim(-4, 4)
     plt.xlabel('bpPos', size=12)
     plt.ylabel("log2("+pop+"/avg)", size=12)
-    plt.legend(loc='best')
+    plt.legend(bbox_to_anchor=(0, 0, 1, 1),
+               loc=0,
+               numpoints=1,
+               prop={'size': 8})
     plt.title(pop + " compared to other pops avg'd")
     plt.autoscale(axis='x', tight=True)
     plt.savefig(pop+".pdf",
