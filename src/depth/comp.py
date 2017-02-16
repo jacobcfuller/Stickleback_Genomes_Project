@@ -73,7 +73,7 @@ def log(avgDF, avgDFDict, pop):
             if totalMeanDF[x] == 0:
                 logX = np.inf
             logDF.iloc[x, 0] = logX
-
+    logDF.to_csv(pop+".csv")
     return(logDF)
 
 
