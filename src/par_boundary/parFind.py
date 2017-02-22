@@ -20,8 +20,6 @@ chrXIX = 20612724
 def plotLogDF(logDF, output, inputFile):
     '''Create .png image of log(male/female) plot
     '''
-    # N count needs to be modified to reflect table length change
-    #NCount = np.loadtxt("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/src/par_boundary/NCount.txt")
     posInfDF, negInfDF = getInfTable(logDF)
     xData = (logDF.index+getSkipRows(inputFile))*getInputWinIncr(inputFile)
     yData = logDF['log(male/female)']
@@ -38,13 +36,6 @@ def plotLogDF(logDF, output, inputFile):
              mec='blue',
              mew=0.0,
              label='log2(male/female)')
-    #plt.plot(xData,
-    #         NCount,
-    #         'mo',
-    #         ms=4.0,
-    #         mec='magenta',
-    #         mew=0.0,
-    #         label='N region')
     posInf = posInfDF['posInf']
     plt.plot(xData,
              posInf,
@@ -61,7 +52,6 @@ def plotLogDF(logDF, output, inputFile):
              mec='red',
              mew=0.0,
              label='log2() = -inf')
-    # boundary = 2737500
     plt.plot((boundary, boundary),
              (-3, 2),
              'k-',
