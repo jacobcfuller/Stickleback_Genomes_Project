@@ -55,24 +55,42 @@ def getInfTable(logDF):
 
 
 def log(avgDF, avgDFDict, pop):
-    # all populations averaged together
-    totalMeanDF = avgDF
-    # Average of population chosen for comparison
-    avgPop = avgDFDict[pop]
-    logDF = pd.DataFrame(index=np.arange(len(totalMeanDF)),
-                         columns=["log("+pop+"/avg)"])
+    '''Take the log difference of selected population's averaged read depth
+    compared to total populations group.
+    input:
+        avgDF = the average of all averaged populations
+        avgDFDict = a dictionary of each average population
+        pop = choice for comparison
+    '''
+    log_column = ("log("+pop+"/Avg)")
+    pop_column = str(pop)
+    logDF = pd.DataFrame(index=np.arange(len(avgDF)),
+                         columns=["Avg", pop_column, log_column])
+    logDF['Avg'] = avgDF
+    logDF[pop_column] = avgDFDict[pop]
 
-    for x in range(len(totalMeanDF)):
-        logX = math.log2(totalMeanDF[x]/avgPop[x])
-        if(N_df.iloc[x, 0] == 0):
-            logDF.iloc[x, 0] = np.nan
+    # I think this is best way to go through dataframe
+    for index, row in logDF.iterrows():
+        # 0 = N present on reference. Set to nan.
+        if(N_df.iloc[index, 0] == 0):
+            logDF.set_value(index, log_column, np.nan)
         else:
-            # might need to swap these
-            if avgPop[x] == 0:
-                logX = -np.inf
-            if totalMeanDF[x] == 0:
-                logX = np.inf
-            logDF.iloc[x, 0] = logX
+            # if both are 0, set to 0
+            if row['Avg'] == 0 and row[pop_column] == 0:
+                logDF.set_value(index, log_column, 0)
+            else:
+                # if pop is 0, set to -inf
+                if row[pop_column] == 0.0:
+                    logDF.set_value(index, log_column, -np.inf)
+                # if avg is 0, set to +inf
+                elif row['Avg'] == 0.0:
+                    logDF.set_value(index, log_column, np.inf)
+                # if everything clean, get log
+                else:
+                    logX = math.log2(row['Avg']/row[pop_column])
+                    logDF.set_value(index, log_column, logX)
+
+    # save table for downstream analysis
     logDF.to_csv(pop+".csv")
     return(logDF)
 
@@ -93,13 +111,12 @@ def graph(logDF):
              ms=4.0,
              mec='yellow',
              mew=0.0,
-             label='pos_inf')
+             label='inf')
     plt.plot(neg_inf,
-             'go',
+             'yo',
              ms=4.0,
-             mec='green',
-             mew=0.0,
-             label='neg_inf')
+             mec='yellow',
+             mew=0.0)
     plt.plot(N_df,
              'ro',
              ms=4.0,
@@ -134,4 +151,4 @@ if __name__ == '__main__':
     avgDF = avgAll(avgDFDict, pop)
 
     log_df = log(avgDF, avgDFDict, pop)
-    graph(log_df)
+    #graph(log_df)
