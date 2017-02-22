@@ -6,7 +6,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 N_txt = ("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/src/"
          "divergence/Y_N_count.txt")
 
@@ -30,28 +29,6 @@ def getInput(avgDFDict):
 def avgAll(avgDFDict, pop):
     avgDF = (pd.concat((avgDFDict[x] for x in avgDFDict), axis=1)).mean(axis=1)
     return(avgDF)
-
-
-def getInfTable(logDF):
-    infIndex = np.arange(len(logDF))
-    posInfDF = pd.DataFrame(index=infIndex,
-                            columns=['posInf'])
-    for x in range(len(logDF)):
-        if np.isinf(logDF.iloc[x, 0]) and np.sign(logDF.iloc[x, 0]) == 1:
-            posInfDFValue = 0
-        else:
-            posInfDFValue = np.nan
-        posInfDF.iloc[x, 0] = posInfDFValue
-
-    negInfDF = pd.DataFrame(index=infIndex,
-                            columns=['negInf'])
-    for x in range(len(logDF)):
-        if np.isinf(logDF.iloc[x, 0]) and np.sign(logDF.iloc[x, 0]) == -1:
-            negInfDFValue = 0
-        else:
-            negInfDFValue = np.nan
-        negInfDF.iloc[x, 0] = negInfDFValue
-    return posInfDF, negInfDF
 
 
 def log(avgDF, avgDFDict, pop):
@@ -95,48 +72,6 @@ def log(avgDF, avgDFDict, pop):
     return(logDF)
 
 
-def graph(logDF):
-    pos_inf, neg_inf = getInfTable(logDF)
-
-    plt.figure(num=1, figsize=(15, 5))
-    plt.plot(logDF,
-             'bo',
-             alpha=0.5,
-             ms=4.0,
-             mec='blue',
-             mew=0.0,
-             label='log2('+pop+'/avg)')
-    plt.plot(pos_inf,
-             'yo',
-             ms=4.0,
-             mec='yellow',
-             mew=0.0,
-             label='inf')
-    plt.plot(neg_inf,
-             'yo',
-             ms=4.0,
-             mec='yellow',
-             mew=0.0)
-    plt.plot(N_df,
-             'ro',
-             ms=4.0,
-             mec='red',
-             mew=0.0,
-             label='N')
-    plt.ylim(-4, 4)
-    plt.xlabel('bpPos', size=12)
-    plt.ylabel("log2("+pop+"/avg)", size=12)
-    plt.legend(bbox_to_anchor=(0, 0, 1, 1),
-               loc=0,
-               numpoints=1,
-               prop={'size': 8})
-    plt.title(pop + " compared to other pops avg'd")
-    plt.autoscale(axis='x', tight=True)
-    plt.savefig(pop+".pdf",
-                format='pdf',
-                bbox_inches='tight')
-
-
 # ======================== #
 #           Main           #
 # ======================== #
@@ -151,4 +86,3 @@ if __name__ == '__main__':
     avgDF = avgAll(avgDFDict, pop)
 
     log_df = log(avgDF, avgDFDict, pop)
-    #graph(log_df)

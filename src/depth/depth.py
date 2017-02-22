@@ -111,12 +111,6 @@ def graphDepth(dfAVGdict, out):
 
 if __name__ == '__main__':
 
-    # parser = argparse.ArgumentParser(description='depth')
-    # parser.add_argument('-c', '--cov', type=str, metavar='C', required=True)
-    # parser.add_argument('-o', '--out', type=str, metavar='O', required=True)
-    # parser.add_argument('folder', metavar='F', type=str, help='path to file')
-    # args = vars(parser.parse_args())
-
     dfdict = importDepth()
     dfdict = normPops(dfdict)
     popAvgDict = avgPops(dfdict)
