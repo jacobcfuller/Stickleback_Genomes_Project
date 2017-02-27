@@ -64,7 +64,7 @@ def log(avgDF, avgDFDict, pop):
                     logDF.set_value(index, log_column, np.inf)
                 # if everything clean, get log
                 else:
-                    logX = math.log2(row['Avg']/row[pop_column])
+                    logX = math.log2(row[pop_column]/row['Avg'])
                     logDF.set_value(index, log_column, logX)
 
     # save table for downstream analysis
