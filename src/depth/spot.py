@@ -21,7 +21,7 @@ def import_log():
             df = pd.read_csv(csv_path+f)
             name = str(f)[:str(f).find(".filter")]
             pos_csv[name] = df
-        if "neg" in f:
+        elif "neg" in f:
             df = pd.read_csv(csv_path+f)
             name = str(f)[:str(f).find(".filter")]
             neg_csv[name] = df
@@ -33,11 +33,19 @@ def import_log():
 def get_reg():
     pos_csv, neg_csv = import_log()
     for x in pos_csv:
-        # row = (0)index, (1)avg, (2)pop, (3)log
-        for index, row in pos_csv[x].iterrows():
-            if(row[3] > 0):
-                print(row)
-        break
+        with open("reg/"+x+".reg", 'w') as output:
+            output.write("bp_pos"+'\t'+"log"+'\n')
+            # row = (0)index, (1)avg, (2)pop, (3)log
+            for index, row in pos_csv[x].iterrows():
+                if(row[3] > 0):
+                    output.write(str(row[0])+'\t'+str(row[3])+'\n')
+    for x in neg_csv:
+        with open("reg/"+x+".reg", 'w') as output:
+            output.write("bp_pos"+'\t'+"log"+'\n')
+            # row = (0)index, (1)avg, (2)pop, (3)log
+            for index, row in neg_csv[x].iterrows():
+                if(row[3] < 0):
+                    output.write(str(row[0])+'\t'+str(row[3])+'\n')
 
 
 # ======================== #
