@@ -27,24 +27,45 @@ def filterLog(logDF):
     pop_col = list(logDF)[1]
     log_col = list(logDF)[2]
 
-    # if both avg_col and pop_col are <5, set to Nan
+    # make new DataFrames for both pos and neg
+    pos_log = pd.DataFrame(columns=[avg_col, pop_col, log_col])
+    neg_log = pd.DataFrame(columns=[avg_col, pop_col, log_col])
+    # if both avg_col and pop_col are <5, or log too low, set to Nan
     for index, row in logDF.iterrows():
-        if row[avg_col] < 5 and row[pop_col] < 5:
-            logDF.set_value(index, avg_col, np.nan)
-            logDF.set_value(index, pop_col, np.nan)
-            logDF.set_value(index, log_col, np.nan)
-    logDF.to_csv(pop_col+".filter.csv")
-    return(logDF)
+        if (row[avg_col] < 5 and row[pop_col] < 5) or (row[log_col] < 0.5):
+            pos_log.set_value(index, avg_col, np.nan)
+            pos_log.set_value(index, pop_col, np.nan)
+            pos_log.set_value(index, log_col, np.nan)
+        else:
+            pos_log.set_value(index, avg_col, row[avg_col])
+            pos_log.set_value(index, pop_col, row[pop_col])
+            pos_log.set_value(index, log_col, row[log_col])
+
+    pos_log.to_csv("filter/"+pop_col+".pos.filter.csv")
+    # if both avg_col and pop_col are <5, or log too high, set to Nan
+    for index, row in logDF.iterrows():
+        if (row[avg_col] < 5 and row[pop_col] < 5) or (row[log_col] > -0.5):
+            neg_log.set_value(index, avg_col, np.nan)
+            neg_log.set_value(index, pop_col, np.nan)
+            neg_log.set_value(index, log_col, np.nan)
+        else:
+            neg_log.set_value(index, avg_col, row[avg_col])
+            neg_log.set_value(index, pop_col, row[pop_col])
+            neg_log.set_value(index, log_col, row[log_col])
+
+    neg_log.to_csv("filter/"+pop_col+".neg.filter.csv")
+
+    return(pos_log, neg_log)
 
 
 def graph(logDF):
     x = range(len(logDF))
     y = logDF[list(logDF)[2]]
 
-    plt.figure(num=1, figsize=(20, 5))
+    plt.figure(num=1, figsize=(15, 5))
     plt.plot(x,
              y)
     plt.savefig(list(logDF)[1]+".pdf", format='pdf', bbox_inches='tight')
 
 
-graph(filterLog(getLogDF()))
+filterLog(getLogDF())
