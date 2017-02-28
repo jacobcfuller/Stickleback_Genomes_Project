@@ -29,24 +29,72 @@ def import_log():
     return(pos_csv, neg_csv)
 
 
-# pull out regions with log and
+# pull out regions and print to file
 def get_reg():
     pos_csv, neg_csv = import_log()
     for x in pos_csv:
         with open("reg/"+x+".reg", 'w') as output:
-            output.write("bp_pos"+'\t'+"log"+'\n')
+            output.write("bp_pos" + "\t" +
+                         "Avg. depth" + "\t" +
+                         x + " depth" + "\t" +
+                         "log" + "\n")
             # row = (0)index, (1)avg, (2)pop, (3)log
             for index, row in pos_csv[x].iterrows():
                 if(row[3] > 0):
-                    output.write(str(row[0])+'\t'+str(row[3])+'\n')
+                    output.write(str(row[0]) + '\t' +
+                                 str(row[1]) + '\t' +
+                                 str(row[2]) + '\t' +
+                                 str(row[3])+'\n')
     for x in neg_csv:
         with open("reg/"+x+".reg", 'w') as output:
-            output.write("bp_pos"+'\t'+"log"+'\n')
+            output.write("bp_pos" + "\t" +
+                         "Avg. depth" + "\t" +
+                         x + " depth" + "\t" +
+                         "log" + "\n")
             # row = (0)index, (1)avg, (2)pop, (3)log
             for index, row in neg_csv[x].iterrows():
                 if(row[3] < 0):
-                    output.write(str(row[0])+'\t'+str(row[3])+'\n')
+                    output.write(str(row[0]) + '\t' +
+                                 str(row[1]) + '\t' +
+                                 str(row[2]) + '\t' +
+                                 str(row[3])+'\n')
 
+
+# combine into master table
+def get_table():
+    regs = []
+    pop_regs = dict()
+    # get all regions
+    for f in os.listdir("reg"):
+        df = pd.read_table("reg/"+f, usecols=[0, 3])
+        pop_regs[f] = df
+        array = np.genfromtxt("reg/"+f, skip_header=1, usecols=0)
+        for x in array:
+            if x not in regs:
+                regs.append(x)
+    regs.sort()
+
+    # get column names for master DataFrame
+    cols = []
+    pos_csv, neg_csv = import_log()
+    for x in list(pos_csv):
+        cols.append(x[:x.find(".pos")])
+    DF_master = pd.DataFrame(columns=cols, index=regs)
+    DF_master.index.names = ['Var. regions']
+
+    # pop_reg columns = "bp_pos", "log"
+    for df in pop_regs:
+        name = df[:df.find(".")]
+        for index, row in pop_regs[df].iterrows():
+            DF_master.set_value(row['bp_pos'], name, row['log'])
+
+    return(DF_master)
+
+
+def main():
+    # get_reg()
+    DF_master = get_table()
+    DF_master.to_csv("test", sep='\t')
 
 # ======================== #
 #           Main           #
@@ -54,5 +102,4 @@ def get_reg():
 
 
 if __name__ == '__main__':
-
-    get_reg()
+    main()
