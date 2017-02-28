@@ -44,7 +44,7 @@ def get_reg():
                     output.write(str(row[0]) + '\t' +
                                  str(row[1]) + '\t' +
                                  str(row[2]) + '\t' +
-                                 str(row[3])+'\n')
+                                 str(row[3]) + '\n')
     for x in neg_csv:
         with open("reg/"+x+".reg", 'w') as output:
             output.write("bp_pos" + "\t" +
@@ -57,7 +57,7 @@ def get_reg():
                     output.write(str(row[0]) + '\t' +
                                  str(row[1]) + '\t' +
                                  str(row[2]) + '\t' +
-                                 str(row[3])+'\n')
+                                 str(row[3]) + '\n')
 
 
 # combine into master table
