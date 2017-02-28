@@ -2,7 +2,7 @@
 Python scripts and small programs for analyzing different aspects of Y chromosome sequences
 
 ## depth
-* Use read depth of y chromosome sequences to elucidate structural variations
+* Use read depth of y chromosome sequences to search for structural variations
 
 ## divergence
 * Use SNPs (single nucleotide polymorphisms) to analyze diversity between populations
