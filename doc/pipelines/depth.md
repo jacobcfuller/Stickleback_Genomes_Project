@@ -43,3 +43,6 @@ bedtools genomecov \
 ```bash
 bedtools genomecov -ibam ${sample}_y.bam > ${sample}_genome.cov
 ```
+* Use Alice's script Calculate_Coverage_V2.py to get reads for specific chromosomes from output of previous step
+
+## Process and Filter
