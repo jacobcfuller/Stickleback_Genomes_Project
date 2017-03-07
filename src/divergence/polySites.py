@@ -20,7 +20,7 @@ def makeDF(snpTable):
 # reaches maximum recusion if too many 0s?
 def fillInZeros(maleDF, index, winCount, incr):
     '''If the bp location of the next SNP call is greater than window size,
-       fill in with '0' for 0 SNPs in that window
+       fill in with '0' for 0 SNPs in that window.
        Increments winCount and returns the new count for slideWindow.
     '''
     mDF = maleDF
