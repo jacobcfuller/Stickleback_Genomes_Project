@@ -1,5 +1,6 @@
 #!/home/jcfuller/anaconda3/bin/python3.5
-
+'''Finds snps unique to Y chromosome
+'''
 # Must remove 82M19 unordered scaffold before using this
 import argparse
 import pandas as pd
@@ -16,22 +17,18 @@ def makeDF(snpTable):
     return snpDF
 
 
-# This shit's recursive, y'all
+# reaches maximum recusion if too many 0s?
 def fillInZeros(maleDF, index, winCount, incr):
     '''If the bp location of the next SNP call is greater than window size,
-       fill in with '0' for 0 SNPs in that window. Repeat recursively.
+       fill in with '0' for 0 SNPs in that window
        Increments winCount and returns the new count for slideWindow.
     '''
     mDF = maleDF
-    if(mDF.iloc[index+1]['POS'] >= (incr*winCount)):
+    while(mDF.iloc[index+1]['POS'] >= (incr*winCount)):
         print(str(incr*winCount)+'\t'+'0')
         winCount += 1
-        return fillInZeros(mDF, index, winCount, incr)
     else:
         return winCount
-
-
-#def tableEnd(maleDF, femaleDF, index, incr):
 
 
 def slideWindow(maleFile, femaleFile, incr):
