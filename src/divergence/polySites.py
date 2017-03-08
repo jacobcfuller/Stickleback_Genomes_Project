@@ -3,7 +3,10 @@
 '''
 # Must remove 82M19 unordered scaffold before using this
 import argparse
+import math
 import pandas as pd
+
+Y_len = 12341907
 
 
 def makeDF(snpTable):
@@ -31,7 +34,7 @@ def fillInZeros(maleDF, index, winCount, incr):
         return winCount
 
 
-def slideWindow(maleFile, femaleFile, incr):
+def slideWindow(maleFile, femaleFile, incr, name):
     '''Sliding window count of SNPs that are present in male Y VCF, but not
        female, assuming that these are unique Y chr polymorphisms.
        Prints bp position and snp count for that window.
@@ -39,7 +42,7 @@ def slideWindow(maleFile, femaleFile, incr):
     mDF = makeDF(maleFile)
     fDF = makeDF(femaleFile)
     # file header
-    print("pos"+'\t'+'snp #')
+    print("pos"+'\t'+name+' snp #')
     snpCount = 0
     winCount = 1
     # remember DF is 0-index
@@ -49,7 +52,12 @@ def slideWindow(maleFile, femaleFile, incr):
             snpCount += 1
         # this may need to be modified, but right now fixes table end
         if(index == (len(mDF)-1)):
-            return (print(str(incr*winCount)+'\t'+str(snpCount)))
+            print(str(incr*winCount)+'\t'+str(snpCount))
+            end = math.ceil((Y_len - incr*winCount)/1000)
+            for i in range(end):
+                winCount += 1
+                print(str(incr*winCount)+'\t'+"0")
+            return()
         # need to figure out tail end of dataframe
         if(mDF.iloc[index+1]['POS'] >= (incr*winCount)):
             print(str(incr*winCount)+'\t'+str(snpCount))
@@ -72,6 +80,8 @@ if __name__ == '__main__':
                         required=True)
     Parser.add_argument('-f', '--femaleFile', type=str, metavar='F',
                         required=True)
+    Parser.add_argument('-n', '--name', type=str, metavar='N',
+                        required=True)
     Parser.add_argument('-i', '--increment', type=float, metavar='I',
                         required=True)
     args = vars(Parser.parse_args())
@@ -80,5 +90,6 @@ if __name__ == '__main__':
     maleFile = args['maleFile']
     femaleFile = args['femaleFile']
     incr = int(args['increment'])
+    name = args['name']
     del args
-    slideWindow(maleFile, femaleFile, incr)
+    slideWindow(maleFile, femaleFile, incr, name)
