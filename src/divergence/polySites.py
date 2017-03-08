@@ -42,7 +42,7 @@ def slideWindow(maleFile, femaleFile, incr, name):
     mDF = makeDF(maleFile)
     fDF = makeDF(femaleFile)
     # file header
-    print("pos"+'\t'+name+' snp #')
+    print("pos"+'\t'+name)
     snpCount = 0
     winCount = 1
     # remember DF is 0-index
