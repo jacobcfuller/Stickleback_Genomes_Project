@@ -128,4 +128,21 @@ def filter_nan(log_df):
     log_df = log_df.dropna()
     return(log_df)
 
-filter_nan(log(snp_filter())).to_csv("dropna.csv", ",")
+
+def main():
+    '''Make csvs containing NaN and without NaN
+    '''
+    folder = ("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/"
+              "data/filtered_snps/")
+    # drop NaN csv
+    filter_nan(log(snp_filter())).to_csv(folder+"snps_noNaN.csv", ",")
+    log(snp_filter()).to_csv(folder+"snps.csv", ",")
+
+
+# ======================== #
+#           Main           #
+# ======================== #
+
+
+if __name__ == '__main__':
+    main()
