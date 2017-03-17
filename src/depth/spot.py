@@ -88,11 +88,13 @@ def get_table():
         for index, row in pop_regs[df].iterrows():
             DF_master.set_value(row['bp_pos'], name, row['log'])
 
+    # make true bp pos instead of kb windows
+    DF_master.index = DF_master.index * 1000
     return(DF_master)
 
 
 def main():
-    # get_reg()
+    get_reg()
     DF_master = get_table()
     DF_master.to_csv("test", sep='\t')
 
