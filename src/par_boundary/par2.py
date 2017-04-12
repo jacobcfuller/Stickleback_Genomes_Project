@@ -69,6 +69,9 @@ def parFinder(logTxtFile):
 #           Main           #
 # ======================== #
 
+
 if __name__ == '__main__':
     # just for testing. should return 2612750.
-    parFinder("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/data/depth_analysis/Pacific_Ocean/unmasked/POM544_POF543_unmasked.txt")
+    parFinder("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/"
+              "data/depth_analysis/Pacific_Ocean/unmasked/"
+              "POM544_POF543_unmasked.txt")

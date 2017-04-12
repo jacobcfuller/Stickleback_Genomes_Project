@@ -136,6 +136,7 @@ def main():
               "data/filtered_snps/")
     # drop NaN csv
     filter_nan(log(snp_filter())).to_csv(folder+"snps_noNaN.csv", ",")
+    # all data csv
     log(snp_filter()).to_csv(folder+"snps.csv", ",")
 
 

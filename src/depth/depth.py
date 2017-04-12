@@ -12,10 +12,10 @@ depthDirPath = ("/home/jcfuller/Documents/White_lab/"
                 "data/depth_analysis/Y_chr/")
 
 
-def importDepth():
+def import_depth():
     '''Go into subdirectories to fetch all sliding window depth files
 
-    output: Dictionary of population DataFrames
+    output: Dictionary of population DataFrames.
     '''
     popDFs = dict()
     for d in os.listdir(depthDirPath):
@@ -28,16 +28,16 @@ def importDepth():
     return(popDFs)
 
 
-def normPops(DFdict):
+def norm_pops(DFdict):
     '''Imports table of individual aligned read counts into DataFrame. Finds
     the highest read count, then multiplies all others by (highest/individual).
 
-    input:DataFrame from importDepth().
+    input:DataFrame from import_depth().
     output: normalized version of DFdict
     '''
     # table population with their individual aligned read counts
     tablePath = ("/home/jcfuller/Documents/White_lab/"
-                 "Stickleback_Genomes_Project/doc/reads.csv")
+                 "Stickleback_Genomes_Project/doc/project_misc/reads.csv")
     # import into dataframe, only use individual name column with associated read
     reads = pd.read_csv(tablePath, usecols=['Ind', 'Aligned Reads'])
 
@@ -70,48 +70,46 @@ def normPops(DFdict):
 
 
 # need to figure out naming for graph
-def avgPops(DFdict):
+def avg_pops():
+    '''DFdict contains a dictionary of dataframes. Each dataframe contains
+    a population, where each column in the dataframe is an individual.
+
+    Returns a new dictionary of dataframes (or Series, rather), where each
+    DataFrame is the average of all individuals in a population.
+    '''
+    DF_dict = import_depth()
+    norm_dict = norm_pops(DF_dict)
+
     popAvgDict = dict()
-    for x in DFdict:
-        df = DFdict[x]
+    for x in norm_dict:
+        df = norm_dict[x]
         popAvgDict[x] = df.mean(axis=1)
 
     return(popAvgDict)
 
 
-def makePopsAvgDF():
-    ''' Put all functions together and return a dictionary of dataframes,
-    each of which are the averaged read depth of the given populations
+def pop_covs(popAvgDict):
+    pop_covs = dict()
+    for name in list(popAvgDict):
+        pop_covs[name] = popAvgDict[name].mean()
+    return(pop_covs)
+
+
+def cov(popAvgDict):
+    '''Get the average coverage on the Y chromosome for each population.
+
+    Change avg pops dataframe. make values = (orig. value/avg cov)
     '''
-    dfdict = importDepth()
-    normDict = normPops(dfdict)
-    popAvgDict = avgPops(normDict)
-    return(popAvgDict)
+    pop_covs = dict()
+    for name in list(popAvgDict):
+        pop_covs[name] = popAvgDict[name].mean()
+
+    for df_name, df_pop in popAvgDict.items():
+        for index, value in df_pop.iteritems():
+            df_pop.set_value(index, (value/pop_covs[df_name]))
+
+    return(popAvgDict, pop_covs)
 
 
-def graphDepth(dfAVGdict, out):
-    for df in dfAVGdict:
-        dfAVGdict[df].plot(kind='area',
-                           legend=True,
-                           figsize=(15, 5),
-                           linewidth=0,
-                           stacked=False,
-                           alpha=0.5)
-    plt.title("Read Depth")
-    plt.autoscale(axis='x', tight=True)
-    plt.savefig(out+".pdf",
-                format='pdf',
-                bbox_inches='tight')
-
-
-# ======================== #
-#           Main           #
-# ======================== #
-
-
-if __name__ == '__main__':
-
-    dfdict = importDepth()
-    dfdict = normPops(dfdict)
-    popAvgDict = avgPops(dfdict)
-    graphDepth(popAvgDict, "test")
+def main():
+    cov(avg_pops())

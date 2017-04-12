@@ -31,7 +31,12 @@ def avgAll(avgDFDict, pop):
     return(avgDF)
 
 
-def log(avgDF, avgDFDict, pop):
+def log_all(avgDFDict):
+    for x in avgDFDict:
+        log(avgDFDict, x)
+
+
+def log(avgDFDict, pop):
     '''Take the log difference of selected population's averaged read depth
     compared to total populations group.
     input:
@@ -39,6 +44,8 @@ def log(avgDF, avgDFDict, pop):
         avgDFDict = a dictionary of each average population
         pop = choice for comparison
     '''
+    avgDF = avgAll(avgDFDict, pop)
+
     log_column = ("log("+pop+"/Avg)")
     pop_column = str(pop)
     logDF = pd.DataFrame(index=np.arange(len(avgDF)),
@@ -72,6 +79,13 @@ def log(avgDF, avgDFDict, pop):
     return(logDF)
 
 
+def main():
+        avgDFDict, pop_covs = depth.cov(depth.avg_pops())
+
+        log_all(avgDFDict)
+        
+        #logDF = log(avgDFDict, pop)
+
 # ======================== #
 #           Main           #
 # ======================== #
@@ -79,10 +93,4 @@ def log(avgDF, avgDFDict, pop):
 
 if __name__ == '__main__':
 
-    avgDFDict = depth.makePopsAvgDF()
-
-    pop = getInput(avgDFDict)
-
-    avgDF = avgAll(avgDFDict, pop)
-
-    log_df = log(avgDF, avgDFDict, pop)
+    main()

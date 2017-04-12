@@ -1,6 +1,8 @@
 #!/home/jcfuller/anaconda3/bin/python3.5
 
 import argparse
+import depth
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -19,9 +21,18 @@ def getLogDF():
     return(logDF)
 
 
+def filter_all():
+    for f in os.listdir("."):
+        if ".csv" in f:
+            logDF = pd.read_csv(f, index_col=0)
+            filterLog(logDF)
+
+
 def filterLog(logDF):
     '''Get rid of values that mean nothing
     '''
+    cov = depth.pop_covs(depth.avg_pops())
+
     # asign as variables for easier reading
     avg_col = list(logDF)[0]
     pop_col = list(logDF)[1]
@@ -31,8 +42,11 @@ def filterLog(logDF):
     pos_log = pd.DataFrame(columns=[avg_col, pop_col, log_col])
     neg_log = pd.DataFrame(columns=[avg_col, pop_col, log_col])
     # if both avg_col and pop_col are <5, or log too low, set to Nan
+    print(pop_col, cov[pop_col])
+    min_cov = (5/cov[pop_col])
     for index, row in logDF.iterrows():
-        if (row[avg_col] < 5 and row[pop_col] < 5) or (row[log_col] < 0.5):
+        if ((row[avg_col] < min_cov and row[pop_col] < min_cov) or
+           (row[log_col] < 0.5)):
             pos_log.set_value(index, avg_col, np.nan)
             pos_log.set_value(index, pop_col, np.nan)
             pos_log.set_value(index, log_col, np.nan)
@@ -44,7 +58,8 @@ def filterLog(logDF):
     pos_log.to_csv("filter/"+pop_col+".pos.filter.csv")
     # if both avg_col and pop_col are <5, or log too high, set to Nan
     for index, row in logDF.iterrows():
-        if (row[avg_col] < 5 and row[pop_col] < 5) or (row[log_col] > -0.5):
+        if ((row[avg_col] < min_cov and row[pop_col] < min_cov) or
+           (row[log_col] > -0.5)):
             neg_log.set_value(index, avg_col, np.nan)
             neg_log.set_value(index, pop_col, np.nan)
             neg_log.set_value(index, log_col, np.nan)
@@ -68,4 +83,4 @@ def graph(logDF):
     plt.savefig(list(logDF)[1]+".pdf", format='pdf', bbox_inches='tight')
 
 
-filterLog(getLogDF())
+filter_all()

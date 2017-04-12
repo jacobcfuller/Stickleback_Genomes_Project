@@ -169,6 +169,7 @@ def getLogTable(mFile, fFile, mReads, fReads):
 #           Main           #
 # ======================== #
 
+
 if __name__ == '__main__':
     # Set up parser
     ScriptDescript = '''Find PAR boundary BP location'''

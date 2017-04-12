@@ -94,9 +94,11 @@ def get_table():
 
 
 def main():
+    folder = ("/home/jcfuller/Documents/White_lab/Stickleback_Genomes_Project/"
+              "data/depth_analysis/")
     get_reg()
     DF_master = get_table()
-    DF_master.to_csv("test", sep='\t')
+    DF_master.to_csv(folder+"var_regs.csv", sep='\t')
 
 # ======================== #
 #           Main           #
