@@ -9,4 +9,4 @@ Working on using genome coverage, divergence, and structural variations to exami
 * contains code I did not write, or modified only slightly
 
 ### doc
-* tracked docs are discriptions of methods/pipelins
+* tracked docs are descriptions of methods/pipelins
