@@ -20,12 +20,15 @@ def slide(depth_value, reads_df):
     spec_depth = []
     bp_count = 0
     spec_count = 0
+    not_count = 0
     win = 0
     for index, value in reads_df.iterrows():
         bp_count += 1
         if(value[0] >= depth_value):
             spec_count += 1
-        if(bp_count == 999):
+        else:
+            not_count += 1
+        if(bp_count == 1000):
             win += 1
             bp_count = 0
             if(spec_count > 0):
@@ -33,6 +36,7 @@ def slide(depth_value, reads_df):
             else:
                 spec_depth.append(0)
             spec_count = 0
+            not_count = 0
     data = {('>' + str(depth_value) + ' %'): spec_depth}
     df = pd.DataFrame(data)
     return(df)
@@ -45,7 +49,7 @@ def run():
     depth_file = args['depth_file']
     reads_df = import_reads(depth_file)
     df = slide(5, reads_df)
-    df.to_csv(depth_file.split("_")[0] + "_win.csv")
+    df.to_csv(depth_file.split("_depth")[0] + "_win.csv")
 
 
 run()
