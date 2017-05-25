@@ -48,6 +48,8 @@ def find_reg():
 
 
 def to_table(N_spots):
+    print("Total N Count: " + str(count_N()) + '\n')
+    print("Regions \n")
     for spot in N_spots:
         print(spot)
 
