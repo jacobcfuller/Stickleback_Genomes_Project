@@ -19,8 +19,7 @@ def import_reads():
 
 
 def compare(df, min_depth):
-    """Examine read depth at each bp position. If shared between all
-    individuals, add "1" to new df, else add "0".
+    """
 
     input
     -----
@@ -30,7 +29,8 @@ def compare(df, min_depth):
 
     returns
     -------
-    comp_df - DataFrame of 1/0 where 1 represents a bp that can be analyzed
+    comp_df - Dataframe including only loci where bp is > min_depth in all inds
+    percent - how much of Y chromosome is actually able to be looked at
     """
 
     # make new series with 0s
@@ -45,13 +45,32 @@ def compare(df, min_depth):
     return filter_df, percent
 
 
+def loci(filter_df):
+    """Take filter_df and return a list of loci where bp depth is adequate
+
+    input
+    -----
+    filter_df = DataFrame
+
+    returns
+    -------
+    loci - int list
+    """
+    loci = list(filter_df.index.values)
+
+    return loci
+
+
 def main():
-    output = input("give output file name: ")
-    min_depth = input("give min depth: ")
+    #output = input("give output file name: ")
+    min_depth = int(input("give min depth: "))
 
-    df = compare(import_reads(), min_depth)
+    df, percent = compare(import_reads(), min_depth)
 
-    df.to_csv(output)
+    print(percent)
+
+    print(loci(df))
+    # df.to_csv(output)
 
 
 # ======================== #
